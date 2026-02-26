@@ -1,0 +1,3 @@
+<resources>
+    <style name="Theme.WaterReminder" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
