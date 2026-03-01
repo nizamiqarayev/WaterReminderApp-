@@ -7,14 +7,14 @@ workflows:
 
     environment:
       java: 17
-      xcode: latest
+      xcode: 16.1
       vars:
-        BUNDLE_ID: "com.yourname.yourapp"
+        BUNDLE_ID: "com.example.waterreminder"
         XCODE_SCHEME: "iosApp"
         XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
-        # Set JAVA_HOME globally so ALL subprocesses (including xcodebuild
-        # build phases) inherit it without any patching needed
         JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+        # These flags sometimes help clang in cinterop find the right headers
+        C_INCLUDE_PATH: /Applications/Xcode-16.1.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include
 
     triggering:
       events:
@@ -69,10 +69,13 @@ workflows:
         script: |
           echo "JAVA_HOME=$JAVA_HOME"
           export PATH="$JAVA_HOME/bin:$PATH"
-          ./gradlew :shared:linkPodReleaseFrameworkIosArm64
+          ./gradlew :shared:linkPodReleaseFrameworkIosArm64 \
+            -Pkotlin.native.preconfigured.headers.enabled=false
 
       - name: Build iOS app (unsigned IPA)
         script: |
+          sudo xcode-select -s /Applications/Xcode-16.1.app/Contents/Developer
+          echo "JAVA_HOME=$JAVA_HOME"
           export PATH="$JAVA_HOME/bin:$PATH"
 
           xcodebuild \

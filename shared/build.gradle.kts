@@ -31,7 +31,7 @@ kotlin {
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         compilations.configureEach {
             cinterops.configureEach {
-                extraOpts("-compiler-options", "-fno-modules")
+                extraOpts("-compiler-options", "-fno-modules -D_DARWIN_C_SOURCE")
             }
         }
     }
