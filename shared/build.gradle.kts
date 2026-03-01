@@ -30,7 +30,7 @@ kotlin {
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         compilations.getByName("main").cinterops.all {
-            extraOpts("-Xcc", "-fno-modules")
+            extraOpts("-compiler-options", "-fno-modules")
         }
     }
 
