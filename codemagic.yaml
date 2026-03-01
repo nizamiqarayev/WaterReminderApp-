@@ -1,0 +1,93 @@
+workflows:
+
+  ios-sideload-build:
+    name: iOS Build (Sideload / AltStore)
+    max_build_duration: 60
+    instance_type: mac_mini_m2   # Free tier eligible
+
+    # ─── Environment ────────────────────────────────────────────────
+    environment:
+      java: 17
+      xcode: latest
+      vars:
+        # Your iOS app bundle ID — must match Xcode project exactly
+        BUNDLE_ID: "com.yourname.yourapp"
+        # Name of your Xcode scheme (usually same as your app name)
+        XCODE_SCHEME: "iosApp"
+        # Path to your .xcodeproj or .xcworkspace (relative to repo root)
+        XCODE_PROJECT: "iosApp/iosApp.xcodeproj"
+
+    # ─── Triggering (optional) ──────────────────────────────────────
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: main
+          include: true
+
+    # ─── Build Steps ────────────────────────────────────────────────
+    scripts:
+
+      # 1. Print environment info for debugging
+      - name: Check environment
+        script: |
+          echo "Xcode version:"
+          xcodebuild -version
+          echo "Java version:"
+          java -version
+          echo "Kotlin/Gradle version:"
+          ./gradlew --version
+
+      # 2. Make gradlew executable
+      - name: Set Gradle permissions
+        script: chmod +x gradlew
+
+      # 3. Build shared KMP framework for iOS
+      #    This compiles your commonMain + iosMain Kotlin into a .framework
+      - name: Build KMP shared framework (iOS)
+        script: |
+          ./gradlew :shared:linkReleaseFrameworkIosArm64
+          # If your module is named differently, replace 'shared' above
+          # For simulator use: linkReleaseFrameworkIosSimulatorArm64
+
+      # 4. Build the iOS app (unsigned — required for free Apple ID)
+      #    CODE_SIGN_IDENTITY="" disables signing so it builds without certs
+      - name: Build iOS app (unsigned IPA)
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build/ios \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
+            build
+
+      # 5. Package .app into an unsigned .ipa
+      #    AltStore / Sideloadly can re-sign this with your free Apple ID
+      - name: Package into .ipa
+        script: |
+          mkdir -p output/Payload
+          cp -r "build/ios/Build/Products/Release-iphoneos/$XCODE_SCHEME.app" \
+            output/Payload/
+          cd output
+          zip -r "../$XCODE_SCHEME.ipa" Payload
+          cd ..
+          echo "✅ IPA created: $XCODE_SCHEME.ipa"
+
+    # ─── Artifacts (files Codemagic will save & let you download) ───
+    artifacts:
+      - "*.ipa"
+      - build/ios/Build/Products/**/*.app
+
+    # ─── Notifications ──────────────────────────────────────────────
+    publishing:
+      email:
+        recipients:
+          - your@email.com   # ← Change this
+        notify:
+          success: true
+          failure: true
