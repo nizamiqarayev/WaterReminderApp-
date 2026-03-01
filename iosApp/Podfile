@@ -15,7 +15,10 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_phases.each do |phase|
       next unless phase.respond_to?(:shell_script)
-      if phase.shell_script&.include?('gradlew')
+      next unless phase.shell_script&.include?('gradlew')
+
+      # Guard: only inject if not already injected (prevents double-injection on re-runs)
+      unless phase.shell_script.include?('java_home')
         phase.shell_script = <<~SHELL
           export JAVA_HOME=$(/usr/libexec/java_home)
           export PATH="$JAVA_HOME/bin:$PATH"
@@ -23,8 +26,8 @@ post_install do |installer|
         SHELL
       end
     end
-  end
- installer.pods_project.targets.each do |target|
+
+    # Fix deployment target warnings from older Firebase/gRPC pods
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
     end
