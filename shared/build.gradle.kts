@@ -23,6 +23,12 @@ kotlin {
         framework {
             baseName = "shared"
         }
+         pod("FirebaseAuth") {
+        version = ">= 10.0"
+    }
+    pod("FirebaseFirestore") {
+        version = ">= 10.0"
+    }
     }
 
     sourceSets {
