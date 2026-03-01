@@ -12,6 +12,9 @@ workflows:
         BUNDLE_ID: "com.yourname.yourapp"
         XCODE_SCHEME: "iosApp"
         XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
+        # Set JAVA_HOME globally so ALL subprocesses (including xcodebuild
+        # build phases) inherit it without any patching needed
+        JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 
     triggering:
       events:
@@ -25,11 +28,18 @@ workflows:
       - name: Set Gradle permissions
         script: chmod +x gradlew
 
-      - name: Check environment
+      - name: Verify JAVA_HOME
         script: |
-          xcodebuild -version
+          echo "JAVA_HOME=$JAVA_HOME"
           java -version
-          ./gradlew --version
+          # If the zulu-17 path doesn't exist, find the correct one and fail loudly
+          if [ ! -d "$JAVA_HOME" ]; then
+            echo "ERROR: JAVA_HOME path does not exist: $JAVA_HOME"
+            echo "Available JDKs:"
+            ls /Library/Java/JavaVirtualMachines/
+            echo "Update the JAVA_HOME var in codemagic.yaml to match one of the above"
+            exit 1
+          fi
 
       - name: List Gradle projects
         script: ./gradlew projects
@@ -49,39 +59,20 @@ workflows:
           grep -q 'composeApp' "$PBXPROJ" && \
             sed -i '' 's/composeApp/shared/g' "$PBXPROJ" && \
             echo "Patched composeApp -> shared" || \
-            echo "No composeApp references found"
+            echo "No composeApp references, skipping"
 
-      - name: Inject JAVA_HOME into shared pod build phase
+      # Run the KMP Gradle build manually BEFORE xcodebuild.
+      # This pre-builds the shared.framework so when xcodebuild hits the
+      # [CP-User] Build shared phase, the framework already exists and
+      # Gradle either skips or succeeds instantly.
+      - name: Pre-build KMP shared framework
         script: |
-          JAVA_HOME_VAL=$(/usr/libexec/java_home)
-          echo "Injecting JAVA_HOME: $JAVA_HOME_VAL"
-
-          # Use xcodeproj gem (already installed with CocoaPods) to safely
-          # patch the shellScript without corrupting pbxproj JSON escaping
-          ruby - "$JAVA_HOME_VAL" << 'RUBYEOF'
-          require 'xcodeproj'
-          java_home = ARGV[0]
-          injection = "export JAVA_HOME=\"#{java_home}\"\nexport PATH=\"$JAVA_HOME/bin:$PATH\"\n"
-
-          project = Xcodeproj::Project.open('iosApp/Pods/Pods.xcodeproj')
-          project.targets.each do |target|
-            next unless target.name == 'shared'
-            target.build_phases.each do |phase|
-              next unless phase.is_a?(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)
-              next unless phase.shell_script&.include?('gradlew')
-              unless phase.shell_script.include?('JAVA_HOME')
-                puts "Patching build phase: #{phase.display_name}"
-                phase.shell_script = injection + phase.shell_script
-                puts "Done."
-              end
-            end
-          end
-          project.save
-          RUBYEOF
+          echo "JAVA_HOME=$JAVA_HOME"
+          export PATH="$JAVA_HOME/bin:$PATH"
+          ./gradlew :shared:linkPodReleaseFrameworkIosArm64
 
       - name: Build iOS app (unsigned IPA)
         script: |
-          export JAVA_HOME=$(/usr/libexec/java_home)
           export PATH="$JAVA_HOME/bin:$PATH"
 
           xcodebuild \
