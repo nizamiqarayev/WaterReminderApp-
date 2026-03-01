@@ -23,21 +23,22 @@ kotlin {
         framework {
             baseName = "shared"
         }
-         pod("FirebaseAuth") {
-        version = ">= 10.0"
+        pod("FirebaseCore") { version = ">= 10.0" }
+        pod("FirebaseAuth") { version = ">= 10.0" }
+        pod("FirebaseFirestore") { version = ">= 10.0" }
     }
-    pod("FirebaseFirestore") {
-        version = ">= 10.0"
-    }
+
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
+        compilations.getByName("main").cinterops.all {
+            extraOpts("-Xcc", "-fno-modules")
+        }
     }
 
     sourceSets {
         commonMain.dependencies {
-            implementation("dev.gitlive:firebase-auth:1.13.0")
-            implementation("dev.gitlive:firebase-firestore:1.13.0")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
             implementation("dev.gitlive:firebase-auth:2.1.0")
-implementation("dev.gitlive:firebase-firestore:2.1.0")
+            implementation("dev.gitlive:firebase-firestore:2.1.0")
         }
         androidMain.dependencies {
             implementation("com.google.firebase:firebase-auth:22.3.1")
