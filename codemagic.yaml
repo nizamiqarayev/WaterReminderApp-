@@ -9,7 +9,7 @@ workflows:
       java: 17
       xcode: latest
       vars:
-        BUNDLE_ID: "com.yourname.yourapp"       # ← change this
+        BUNDLE_ID: "com.yourname.yourapp"
         XCODE_SCHEME: "iosApp"
         XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
 
@@ -22,73 +22,47 @@ workflows:
 
     scripts:
 
-      # 1. Make gradlew executable
       - name: Set Gradle permissions
         script: chmod +x gradlew
 
-      # 2. Check environment
       - name: Check environment
         script: |
           xcodebuild -version
           java -version
           ./gradlew --version
 
-      # 3. List Gradle modules
       - name: List Gradle projects
         script: ./gradlew projects
 
-      # 4. Generate the shared.podspec from the KMP module
       - name: Generate KMP podspec
         script: ./gradlew :shared:generateDummyFramework
 
-      # 5. Install CocoaPods
       - name: Install CocoaPods
         script: |
           gem install cocoapods --no-document
           cd iosApp
           pod install --repo-update
 
-      # 6. Patch the [CP-User] Build shared script on disk with JAVA_HOME
-      #    post_install patches Xcode project objects in memory only —
-      #    the actual .sh files on disk must be patched here in CI.
-      - name: Patch shared pod Gradle script with JAVA_HOME
+      - name: Patch shared pod script with JAVA_HOME
         script: |
-          export JAVA_HOME=$(/usr/libexec/java_home)
-          echo "Injecting JAVA_HOME=$JAVA_HOME"
-
-          find "iosApp/Pods/Target Support Files/shared/" -name "*.sh" 2>/dev/null | while read f; do
-            echo "--- Found: $f ---"
-            cat "$f"
-            if grep -q 'gradlew' "$f" && ! grep -q 'java_home' "$f"; then
-              python3 - "$f" "$JAVA_HOME" <<'PYEOF'
-import sys
-path, java_home = sys.argv[1], sys.argv[2]
-with open(path, 'r') as fh:
-    lines = fh.readlines()
-inject = [
-    'export JAVA_HOME="' + java_home + '"\n',
-    'export PATH="$JAVA_HOME/bin:$PATH"\n',
-]
-if lines and lines[0].startswith('#!'):
-    lines = [lines[0]] + inject + lines[1:]
-else:
-    lines = inject + lines
-with open(path, 'w') as fh:
-    fh.writelines(lines)
-print("Patched: " + path)
-PYEOF
-              echo "--- Patched ---"
+          JAVA_HOME_VAL=$(/usr/libexec/java_home)
+          echo "JAVA_HOME = $JAVA_HOME_VAL"
+          SUPPORT_DIR="iosApp/Pods/Target Support Files/shared"
+          for f in "$SUPPORT_DIR"/*.sh; do
+            echo "Checking: $f"
+            if grep -q 'gradlew' "$f" && ! grep -q 'JAVA_HOME' "$f"; then
+              echo "Patching: $f"
+              HEADER="#!/bin/sh\nexport JAVA_HOME=\"$JAVA_HOME_VAL\"\nexport PATH=\"\$JAVA_HOME/bin:\$PATH\""
+              BODY=$(tail -n +2 "$f")
+              printf "%b\n%s" "$HEADER" "$BODY" > "$f"
+              echo "Done. Result:"
               cat "$f"
-            else
-              echo "Skipped"
             fi
           done
 
-      # 7. Build the iOS app
       - name: Build iOS app (unsigned IPA)
         script: |
           export JAVA_HOME=$(/usr/libexec/java_home)
-
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -102,12 +76,10 @@ PYEOF
             JAVA_HOME="$JAVA_HOME" \
             build
 
-      # 8. Package .app into unsigned .ipa for Sideloadly
       - name: Package into .ipa
         script: |
           mkdir -p output/Payload
-          cp -r "build/ios/Build/Products/Release-iphoneos/$XCODE_SCHEME.app" \
-            output/Payload/
+          cp -r "build/ios/Build/Products/Release-iphoneos/$XCODE_SCHEME.app" output/Payload/
           cd output
           zip -r "../$XCODE_SCHEME.ipa" Payload
           cd ..
@@ -120,7 +92,7 @@ PYEOF
     publishing:
       email:
         recipients:
-          - nizamiqarayev59@gmail.com   # ← change this
+          - nizamiqarayev59@gmail.com
         notify:
           success: true
           failure: true
