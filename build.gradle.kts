@@ -6,4 +6,6 @@ plugins {
     id("org.jetbrains.kotlin.native.cocoapods") version "2.1.0" apply false
     id("com.google.gms.google-services") version "4.4.4" apply false
     id("org.jetbrains.kotlin.plugin.compose") version "2.1.0" apply false
+    kotlin("multiplatform") version "2.0.21" apply false
+
 }
