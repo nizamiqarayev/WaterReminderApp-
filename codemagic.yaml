@@ -3,22 +3,16 @@ workflows:
   ios-sideload-build:
     name: iOS Build (Sideload / AltStore)
     max_build_duration: 60
-    instance_type: mac_mini_m2   # Free tier eligible
+    instance_type: mac_mini_m2
 
-    # ─── Environment ────────────────────────────────────────────────
     environment:
       java: 17
       xcode: latest
       vars:
-        # Your iOS app bundle ID — must match Xcode project exactly
-        BUNDLE_ID: "com.yourname.yourapp"
-        # Name of your Xcode scheme (usually same as your app name)
+        BUNDLE_ID: "com.yourname.yourapp"       # ← change this
         XCODE_SCHEME: "iosApp"
-        # Path to your .xcodeproj or .xcworkspace (relative to repo root)
-        # ⚠️ After pod install you MUST use .xcworkspace, not .xcodeproj
         XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
 
-    # ─── Triggering (optional) ──────────────────────────────────────
     triggering:
       events:
         - push
@@ -26,44 +20,75 @@ workflows:
         - pattern: main
           include: true
 
-    # ─── Build Steps ────────────────────────────────────────────────
     scripts:
 
-      # 1. Make gradlew executable FIRST (must be before any ./gradlew call)
+      # 1. Make gradlew executable
       - name: Set Gradle permissions
         script: chmod +x gradlew
 
-      # 2. Print environment info for debugging
+      # 2. Check environment
       - name: Check environment
         script: |
-          echo "Xcode version:"
           xcodebuild -version
-          echo "Java version:"
           java -version
-          echo "Kotlin/Gradle version:"
           ./gradlew --version
 
-      # 3. Show all Gradle modules (useful for debugging missing modules)
+      # 3. List Gradle modules
       - name: List Gradle projects
         script: ./gradlew projects
 
-
-      # 4. Generate the podspec from the shared KMP module
+      # 4. Generate the shared.podspec from the KMP module
       - name: Generate KMP podspec
         script: ./gradlew :shared:generateDummyFramework
 
-      # 5. Install CocoaPods — fetches FirebaseCore, FirebaseAuth, FirebaseFirestore etc.
+      # 5. Install CocoaPods
       - name: Install CocoaPods
         script: |
           gem install cocoapods --no-document
           cd iosApp
           pod install --repo-update
 
-      # 6. Build iOS app — xcodebuild will automatically trigger
-      #    :shared:linkPodReleaseFrameworkIosArm64 with the correct
-      #    Firebase framework search paths from CocoaPods
+      # 6. Patch the [CP-User] Build shared script on disk with JAVA_HOME
+      #    post_install patches Xcode project objects in memory only —
+      #    the actual .sh files on disk must be patched here in CI.
+      - name: Patch shared pod Gradle script with JAVA_HOME
+        script: |
+          export JAVA_HOME=$(/usr/libexec/java_home)
+          echo "Injecting JAVA_HOME=$JAVA_HOME"
+
+          find "iosApp/Pods/Target Support Files/shared/" -name "*.sh" 2>/dev/null | while read f; do
+            echo "--- Found: $f ---"
+            cat "$f"
+            if grep -q 'gradlew' "$f" && ! grep -q 'java_home' "$f"; then
+              python3 - "$f" "$JAVA_HOME" <<'PYEOF'
+import sys
+path, java_home = sys.argv[1], sys.argv[2]
+with open(path, 'r') as fh:
+    lines = fh.readlines()
+inject = [
+    'export JAVA_HOME="' + java_home + '"\n',
+    'export PATH="$JAVA_HOME/bin:$PATH"\n',
+]
+if lines and lines[0].startswith('#!'):
+    lines = [lines[0]] + inject + lines[1:]
+else:
+    lines = inject + lines
+with open(path, 'w') as fh:
+    fh.writelines(lines)
+print("Patched: " + path)
+PYEOF
+              echo "--- Patched ---"
+              cat "$f"
+            else
+              echo "Skipped"
+            fi
+          done
+
+      # 7. Build the iOS app
       - name: Build iOS app (unsigned IPA)
         script: |
+          export JAVA_HOME=$(/usr/libexec/java_home)
+
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -74,10 +99,10 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
+            JAVA_HOME="$JAVA_HOME" \
             build
 
-      # 6. Package .app into an unsigned .ipa
-      #    AltStore / Sideloadly can re-sign this with your free Apple ID
+      # 8. Package .app into unsigned .ipa for Sideloadly
       - name: Package into .ipa
         script: |
           mkdir -p output/Payload
@@ -86,18 +111,16 @@ workflows:
           cd output
           zip -r "../$XCODE_SCHEME.ipa" Payload
           cd ..
-          echo "✅ IPA created: $XCODE_SCHEME.ipa"
+          echo "IPA ready: $XCODE_SCHEME.ipa"
 
-    # ─── Artifacts (files Codemagic will save & let you download) ───
     artifacts:
       - "*.ipa"
       - build/ios/Build/Products/**/*.app
 
-    # ─── Notifications ──────────────────────────────────────────────
     publishing:
       email:
         recipients:
-          - nizamiqarayev59@gmail.com   # ← Change this
+          - nizamiqarayev59@gmail.com   # ← change this
         notify:
           success: true
           failure: true
