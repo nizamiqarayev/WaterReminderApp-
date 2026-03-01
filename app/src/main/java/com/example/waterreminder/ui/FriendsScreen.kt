@@ -36,7 +36,7 @@ fun FriendsScreen(
 
     val currentUserId = authManager.getCurrentUserId()
 
-    // Fetch friends list (simplified: fetching documents from UIDs in friends array)
+    // Fetch friends list
     LaunchedEffect(currentUserId) {
         if (currentUserId != null) {
             authManager.getUserData(currentUserId) { data, _ ->
@@ -46,21 +46,9 @@ fun FriendsScreen(
                 } else {
                     emptyList()
                 }
-                // Fetch each friend's data
-                val list = mutableListOf<Map<String, Any>>()
-                if (friendIds.isEmpty()) {
-                     friendsList = emptyList()
-                } else {
-                    friendIds.forEach { id ->
-                        authManager.getUserData(id) { friendData, _ ->
-                            if (friendData != null) {
-                                list.add(friendData + ("id" to id))
-                                if (list.size == friendIds.size) {
-                                    friendsList = list
-                                }
-                            }
-                        }
-                    }
+                
+                authManager.getUsersData(friendIds) { list, _ ->
+                    friendsList = list
                 }
             }
         }
@@ -96,8 +84,8 @@ fun FriendsScreen(
 
                 items(friendsList) { friendData ->
                     val name = friendData["username"]?.toString() ?: "User"
-                    // Placeholder for cups: in a real app, this would be synced via Firestore too
-                    FriendCard(name = name, cupsDrank = 0)
+                    val intake = (friendData["cupsDrank"] as? Number)?.toInt() ?: 0
+                    FriendCard(name = name, cupsDrank = intake)
                 }
 
                 item {

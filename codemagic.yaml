@@ -42,15 +42,19 @@ workflows:
           echo "Kotlin/Gradle version:"
           ./gradlew --version
 
-      # 3. Build shared KMP framework for iOS
+      # 3. Show all Gradle modules (useful for debugging missing modules)
+      - name: List Gradle projects
+        script: ./gradlew projects
+
+      # 4. Build shared KMP framework for iOS
       #    This compiles your commonMain + iosMain Kotlin into a .framework
       - name: Build KMP shared framework (iOS)
         script: |
-          ./gradlew :shared:linkReleaseFrameworkIosArm64
-          # If your module is named differently, replace 'shared' above
-          # For simulator use: linkReleaseFrameworkIosSimulatorArm64
+          ./gradlew :shared:linkPodReleaseFrameworkIosArm64
+          # This is the correct task when using the kotlin("native.cocoapods") plugin
+          # For simulator use: linkPodReleaseFrameworkIosSimulatorArm64
 
-      # 4. Build the iOS app (unsigned — required for free Apple ID)
+      # 5. Build the iOS app (unsigned — required for free Apple ID)
       #    CODE_SIGN_IDENTITY="" disables signing so it builds without certs
       - name: Build iOS app (unsigned IPA)
         script: |
@@ -66,7 +70,7 @@ workflows:
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
             build
 
-      # 5. Package .app into an unsigned .ipa
+      # 6. Package .app into an unsigned .ipa
       #    AltStore / Sideloadly can re-sign this with your free Apple ID
       - name: Package into .ipa
         script: |
@@ -87,7 +91,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - your@email.com   # ← Change this
+          - nizamiqarayev59@gmail.com   # ← Change this
         notify:
           success: true
           failure: true

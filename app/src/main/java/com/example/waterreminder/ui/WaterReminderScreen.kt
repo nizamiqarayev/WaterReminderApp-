@@ -33,12 +33,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.example.waterreminder.notifications.WaterNotificationManager
+import com.example.waterreminder.auth.AuthManager
 import com.example.waterreminder.ui.theme.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun WaterReminderScreen(
+    authManager: AuthManager = remember { AuthManager() },
     onNavigateToFriends: () -> Unit,
     onNavigateToProfile: () -> Unit
 ) {
@@ -48,6 +50,18 @@ fun WaterReminderScreen(
     var cupsDrank by remember { mutableStateOf(0) }
     val goal = 8
     var showCelebration by remember { mutableStateOf(false) }
+
+    val currentUserId = authManager.getCurrentUserId()
+
+    // Load initial data
+    LaunchedEffect(currentUserId) {
+        if (currentUserId != null) {
+            authManager.getUserData(currentUserId) { data, _ ->
+                val savedCups = (data?.get("cupsDrank") as? Number)?.toInt() ?: 0
+                cupsDrank = savedCups
+            }
+        }
+    }
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
@@ -88,9 +102,11 @@ fun WaterReminderScreen(
                     
                     DrinkButton(cupsDrank = cupsDrank, goal = goal) {
                         if (cupsDrank < goal) {
-                            cupsDrank++
+                            val nextCup = cupsDrank + 1
+                            cupsDrank = nextCup
+                            authManager.updateWaterIntake(nextCup)
                             notificationManager.sendWaterDrankNotification()
-                            if (cupsDrank == goal) {
+                            if (nextCup == goal) {
                                 showCelebration = true
                             }
                         }
@@ -100,7 +116,11 @@ fun WaterReminderScreen(
                     
                     ReminderSection()
                     
-                    ResetButton { cupsDrank = 0; showCelebration = false }
+                    ResetButton { 
+                        cupsDrank = 0
+                        showCelebration = false 
+                        authManager.updateWaterIntake(0)
+                    }
                 }
             }
         }

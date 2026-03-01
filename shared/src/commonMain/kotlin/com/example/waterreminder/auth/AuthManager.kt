@@ -87,6 +87,26 @@ class AuthManager {
         }
     }
 
+    fun getUsersData(uids: List<String>, onResult: (List<Map<String, Any>>, String?) -> Unit) {
+        if (uids.isEmpty()) {
+            onResult(emptyList(), null)
+            return
+        }
+        scope.launch {
+            try {
+                val results = mutableListOf<Map<String, Any>>()
+                uids.forEach { id ->
+                    val doc = db.collection("users").document(id).get()
+                    val data = doc.data<Map<String, Any>>()
+                    results.add(data + ("id" to id))
+                }
+                onResult(results, null)
+            } catch (e: Exception) {
+                onResult(emptyList(), e.message)
+            }
+        }
+    }
+
     fun updateUsername(newUsername: String, onResult: (Boolean, String?) -> Unit) {
         val uid = getCurrentUserId() ?: return onResult(false, "Not logged in")
         scope.launch {
@@ -125,6 +145,18 @@ class AuthManager {
             try {
                 db.collection("users").document(currentUserId)
                     .update("friends" to FieldValue.arrayUnion(friendId))
+                onResult(true, null)
+            } catch (e: Exception) {
+                onResult(false, e.message)
+            }
+        }
+    }
+
+    fun updateWaterIntake(cups: Int, onResult: (Boolean, String?) -> Unit = { _, _ -> }) {
+        val uid = getCurrentUserId() ?: return onResult(false, "Not logged in")
+        scope.launch {
+            try {
+                db.collection("users").document(uid).update("cupsDrank" to cups)
                 onResult(true, null)
             } catch (e: Exception) {
                 onResult(false, e.message)

@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navController, startDestination = startDest) {
                         composable("home") {
                             WaterReminderScreen(
+                                authManager = authManager,
                                 onNavigateToFriends = { navController.navigate("friends") },
                                 onNavigateToProfile = { navController.navigate("profile") }
                             )
