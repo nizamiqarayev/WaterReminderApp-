@@ -43,26 +43,28 @@ workflows:
           cd iosApp
           pod install --repo-update
 
-      - name: Patch shared pod script with JAVA_HOME
+      - name: Patch pbxproj Gradle script with JAVA_HOME
         script: |
           JAVA_HOME_VAL=$(/usr/libexec/java_home)
-          echo "JAVA_HOME = $JAVA_HOME_VAL"
-          SUPPORT_DIR="iosApp/Pods/Target Support Files/shared"
-          for f in "$SUPPORT_DIR"/*.sh; do
-            echo "Checking: $f"
-            if grep -q 'gradlew' "$f" && ! grep -q 'JAVA_HOME' "$f"; then
-              echo "Patching: $f"
-              HEADER="#!/bin/sh\nexport JAVA_HOME=\"$JAVA_HOME_VAL\"\nexport PATH=\"\$JAVA_HOME/bin:\$PATH\""
-              BODY=$(tail -n +2 "$f")
-              printf "%b\n%s" "$HEADER" "$BODY" > "$f"
-              echo "Done. Result:"
-              cat "$f"
-            fi
-          done
+          PBXPROJ="iosApp/Pods/Pods.xcodeproj/project.pbxproj"
+
+          echo "=== Searching pbxproj for gradlew references ==="
+          grep -n 'gradlew' "$PBXPROJ" || echo "WARNING: No gradlew found in pbxproj!"
+
+          echo "=== Patching pbxproj ==="
+          # The shellScript in pbxproj is a JSON-escaped string on one line.
+          # We inject JAVA_HOME at the very start of the script content.
+          # The pattern finds shellScript = "..." lines containing gradlew.
+          sed -i '' "s|shellScript = \"|shellScript = \"export JAVA_HOME=\\\\\\\\\"$JAVA_HOME_VAL\\\\\\\\\"; export PATH=\\\\\\\\\"\$JAVA_HOME/bin:\$PATH\\\\\\\\\"; |g" "$PBXPROJ"
+
+          echo "=== Verifying patch ==="
+          grep -n 'JAVA_HOME' "$PBXPROJ" && echo "Patch successful!" || echo "WARNING: Patch may have failed"
 
       - name: Build iOS app (unsigned IPA)
         script: |
           export JAVA_HOME=$(/usr/libexec/java_home)
+          export PATH="$JAVA_HOME/bin:$PATH"
+
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -74,7 +76,14 @@ workflows:
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
             JAVA_HOME="$JAVA_HOME" \
-            build
+            build 2>&1 | tee /tmp/xcodebuild.log
+          EXIT_CODE=${PIPESTATUS[0]}
+
+          # Print any script phase output that might be hidden
+          echo "=== Searching for Gradle errors in build log ==="
+          grep -A 5 'Build shared\|gradlew\|JAVA_HOME\|error:\|FAILED' /tmp/xcodebuild.log | tail -50
+
+          exit $EXIT_CODE
 
       - name: Package into .ipa
         script: |
