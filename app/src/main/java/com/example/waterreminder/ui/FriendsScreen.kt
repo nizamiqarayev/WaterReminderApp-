@@ -40,7 +40,12 @@ fun FriendsScreen(
     LaunchedEffect(currentUserId) {
         if (currentUserId != null) {
             authManager.getUserData(currentUserId) { data, _ ->
-                val friendIds = data?.get("friends") as? List<String> ?: emptyList()
+                val friendsRaw = data?.get("friends")
+                val friendIds = if (friendsRaw is List<*>) {
+                    friendsRaw.filterIsInstance<String>()
+                } else {
+                    emptyList()
+                }
                 // Fetch each friend's data
                 val list = mutableListOf<Map<String, Any>>()
                 if (friendIds.isEmpty()) {

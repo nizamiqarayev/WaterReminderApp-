@@ -1,0 +1,55 @@
+
+> Configure project :shared
+w: Kotlin CocoaPods Plugin is fully supported on MacOS machines only. Gradle tasks that can not run on non-mac hosts will be skipped.
+
+w: The following Kotlin/Native targets cannot be built on this machine and are disabled:
+iosArm64, iosSimulatorArm64, iosX64
+To hide this message, add 'kotlin.native.ignoreDisabledTargets=true' to the Gradle properties.
+
+w: The Default Kotlin Hierarchy Template was not applied to 'project ':shared'':
+Explicit .dependsOn() edges were configured for the following source sets:
+[iosArm64Main, iosMain, iosSimulatorArm64Main, iosX64Main]
+
+Consider removing dependsOn-calls or disabling the default template by adding
+    'kotlin.mpp.applyDefaultHierarchyTemplate=false'
+to your gradle.properties
+
+Learn more about hierarchy templates: https://kotl.in/hierarchy-template
+
+
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :shared:preBuild UP-TO-DATE
+> Task :shared:preDebugBuild UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :shared:generateDebugResValues
+> Task :shared:generateDebugResources
+> Task :shared:writeDebugAarMetadata
+> Task :shared:packageDebugResources
+> Task :app:checkDebugAarMetadata FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:checkDebugAarMetadata'.
+> Could not resolve all files for configuration ':app:debugRuntimeClasspath'.
+   > Could not find com.google.firebase:firebase-auth-ktx:.
+     Required by:
+         project :app > project :shared > dev.gitlive:firebase-auth:1.13.0 > dev.gitlive:firebase-auth-android-debug:1.13.0
+   > Could not find com.google.firebase:firebase-common-ktx:.
+     Required by:
+         project :app > project :shared > dev.gitlive:firebase-auth:1.13.0 > dev.gitlive:firebase-auth-android-debug:1.13.0 > dev.gitlive:firebase-app:1.13.0 > dev.gitlive:firebase-app-android-debug:1.13.0
+         project :app > project :shared > dev.gitlive:firebase-auth:1.13.0 > dev.gitlive:firebase-auth-android-debug:1.13.0 > dev.gitlive:firebase-common:1.13.0 > dev.gitlive:firebase-common-android-debug:1.13.0
+         project :app > project :shared > dev.gitlive:firebase-firestore:1.13.0 > dev.gitlive:firebase-firestore-android-debug:1.13.0 > dev.gitlive:firebase-common-internal:1.13.0 > dev.gitlive:firebase-common-internal-android-debug:1.13.0
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+7 actionable tasks: 5 executed, 2 up-to-date
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 1s

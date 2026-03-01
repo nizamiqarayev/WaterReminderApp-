@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.waterreminder.app-mergeDebugResources-64:/values-v21/values-v21.xml",
+            "outputFile": "com.example.waterreminder.app-mergeDebugResources-60:/values-v21/values-v21.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\5a696dd342ecc7df271df9ca0199d6c7\\transformed\\credentials-play-services-auth-1.2.0-rc01\\res\\values-v21\\values-v21.xml",

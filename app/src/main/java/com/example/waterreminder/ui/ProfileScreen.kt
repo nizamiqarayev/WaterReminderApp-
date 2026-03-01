@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -58,7 +58,7 @@ fun ProfileScreen(
                 title = { Text("My Profile", fontWeight = FontWeight.Bold, color = TextColor) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = TextColor)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back", tint = TextColor)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -120,7 +120,7 @@ fun ProfileScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         ProfileMenuItem(
-                            icon = Icons.Default.ExitToApp,
+                            icon = Icons.AutoMirrored.Filled.ExitToApp,
                             text = "Logout",
                             textColor = Color.Red,
                             onClick = {

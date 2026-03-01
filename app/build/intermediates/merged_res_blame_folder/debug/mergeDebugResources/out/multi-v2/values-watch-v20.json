@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.waterreminder.app-mergeDebugResources-64:/values-watch-v20/values-watch-v20.xml",
+            "outputFile": "com.example.waterreminder.app-mergeDebugResources-60:/values-watch-v20/values-watch-v20.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\8549b7328e9318b2767650fdc54bee07\\transformed\\play-services-auth-20.7.0\\res\\values-watch-v20\\values.xml",

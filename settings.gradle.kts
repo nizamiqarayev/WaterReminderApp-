@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "WaterReminder"
 include(":app")
+include(":shared")
+

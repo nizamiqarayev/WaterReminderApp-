@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.waterreminder.app-mergeDebugResources-64:/values-ms/values-ms.xml",
+            "outputFile": "com.example.waterreminder.app-mergeDebugResources-60:/values-ms/values-ms.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\1a198fd53f5697a2c3f0bdd81dbf7481\\transformed\\browser-1.4.0\\res\\values-ms\\values-ms.xml",
@@ -18,23 +18,6 @@
                         "startOffsets": "3612,4000,4100,4219",
                         "endColumns": "104,99,118,101",
                         "endOffsets": "3712,4095,4214,4316"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\7fde8b83ddd438cb909a93a51f68a5c8\\transformed\\play-services-basement-18.9.0\\res\\values-ms\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "218",
-                        "endColumns": "141",
-                        "endOffsets": "359"
-                    },
-                    "to": {
-                        "startLines": "21",
-                        "startColumns": "4",
-                        "startOffsets": "2302",
-                        "endColumns": "145",
-                        "endOffsets": "2443"
                     }
                 },
                 {
@@ -72,13 +55,13 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\88b3fa62e3f9255f95c0473bed01a542\\transformed\\play-services-base-18.9.0\\res\\values-ms\\values.xml",
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\0148ef03fc9bfa358f3a8a9cb40a4b22\\transformed\\play-services-base-18.0.1\\res\\values-ms\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                        "startOffsets": "216,318,487,613,715,883,1011,1127,1230,1411,1516,1687,1818,1985,2156,2219,2279",
+                        "startOffsets": "193,295,464,590,692,860,988,1104,1207,1388,1493,1664,1795,1962,2133,2196,2256",
                         "endColumns": "101,168,125,101,167,127,115,102,180,104,170,130,166,170,62,59,78",
-                        "endOffsets": "317,486,612,714,882,1010,1126,1229,1410,1515,1686,1817,1984,2155,2218,2278,2357"
+                        "endOffsets": "294,463,589,691,859,987,1103,1206,1387,1492,1663,1794,1961,2132,2195,2255,2334"
                     },
                     "to": {
                         "startLines": "13,14,15,16,17,18,19,20,22,23,24,25,26,27,28,29,30",
@@ -86,6 +69,23 @@
                         "startOffsets": "1256,1362,1535,1665,1771,1943,2075,2195,2448,2633,2742,2917,3052,3223,3398,3465,3529",
                         "endColumns": "105,172,129,105,171,131,119,106,184,108,174,134,170,174,66,63,82",
                         "endOffsets": "1357,1530,1660,1766,1938,2070,2190,2297,2628,2737,2912,3047,3218,3393,3460,3524,3607"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\1b47f1657e87461ea33a87b1f5eee0bc\\transformed\\play-services-basement-18.3.0\\res\\values-ms\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "195",
+                        "endColumns": "141",
+                        "endOffsets": "336"
+                    },
+                    "to": {
+                        "startLines": "21",
+                        "startColumns": "4",
+                        "startOffsets": "2302",
+                        "endColumns": "145",
+                        "endOffsets": "2443"
                     }
                 },
                 {

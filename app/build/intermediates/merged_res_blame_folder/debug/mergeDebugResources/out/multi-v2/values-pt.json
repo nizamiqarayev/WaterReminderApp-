@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.waterreminder.app-mergeDebugResources-64:/values-pt/values-pt.xml",
+            "outputFile": "com.example.waterreminder.app-mergeDebugResources-60:/values-pt/values-pt.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\2c49d4776a3a4f6302daaa5f68f88735\\transformed\\material3-release\\res\\values-pt\\values-pt.xml",

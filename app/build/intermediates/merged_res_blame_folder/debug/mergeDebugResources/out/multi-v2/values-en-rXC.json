@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.waterreminder.app-mergeDebugResources-64:/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "com.example.waterreminder.app-mergeDebugResources-60:/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ASUS\\.gradle\\caches\\8.10\\transforms\\7c0d4eb598964a9f4e47a8444addc6aa\\transformed\\ui-release\\res\\values-en-rXC\\values-en-rXC.xml",

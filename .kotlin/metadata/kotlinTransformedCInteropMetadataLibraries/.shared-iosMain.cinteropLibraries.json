@@ -1,0 +1,27 @@
+[
+  {
+    "moduleId": "dev.gitlive:firebase-auth:1.13.0",
+    "file": "C:\\Users\\ASUS\\Desktop\\mobile app for fun\\.kotlin\\metadata\\kotlinTransformedCInteropMetadataLibraries\\dev.gitlive-firebase-auth-1.13.0-iosMain-cinterop\\dev.gitlive_firebase-auth-cinterop-FirebaseAuth-4DCnUA.klib",
+    "sourceSetName": "iosMain"
+  },
+  {
+    "moduleId": "dev.gitlive:firebase-firestore:1.13.0",
+    "file": "C:\\Users\\ASUS\\Desktop\\mobile app for fun\\.kotlin\\metadata\\kotlinTransformedCInteropMetadataLibraries\\dev.gitlive-firebase-firestore-1.13.0-iosMain-cinterop\\dev.gitlive_firebase-firestore-cinterop-FirebaseFirestoreInternal-zyEUgQ.klib",
+    "sourceSetName": "iosMain"
+  },
+  {
+    "moduleId": "dev.gitlive:firebase-firestore:1.13.0",
+    "file": "C:\\Users\\ASUS\\Desktop\\mobile app for fun\\.kotlin\\metadata\\kotlinTransformedCInteropMetadataLibraries\\dev.gitlive-firebase-firestore-1.13.0-iosMain-cinterop\\dev.gitlive_firebase-firestore-cinterop-FirebaseFirestore-zyEUgQ.klib",
+    "sourceSetName": "iosMain"
+  },
+  {
+    "moduleId": "dev.gitlive:firebase-app:1.13.0",
+    "file": "C:\\Users\\ASUS\\Desktop\\mobile app for fun\\.kotlin\\metadata\\kotlinTransformedCInteropMetadataLibraries\\dev.gitlive-firebase-app-1.13.0-iosMain-cinterop\\dev.gitlive_firebase-app-cinterop-FirebaseCore-yma3Rw.klib",
+    "sourceSetName": "iosMain"
+  },
+  {
+    "moduleId": "org.jetbrains.kotlinx:atomicfu:0.23.1",
+    "file": "C:\\Users\\ASUS\\Desktop\\mobile app for fun\\.kotlin\\metadata\\kotlinTransformedCInteropMetadataLibraries\\org.jetbrains.kotlinx-atomicfu-0.23.1-nativeMain-cinterop\\org.jetbrains.kotlinx_atomicfu-cinterop-interop-wFq7cg.klib",
+    "sourceSetName": "nativeMain"
+  }
+]
