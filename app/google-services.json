@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "91273381332",
+    "project_id": "hydrationreminderapp",
+    "storage_bucket": "hydrationreminderapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91273381332:android:86ea4ae463173b3df30241",
+        "android_client_info": {
+          "package_name": "com.example.waterreminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbiAJ8cpBUMsyZJDPCtv4jNCbZ0dxzp2w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

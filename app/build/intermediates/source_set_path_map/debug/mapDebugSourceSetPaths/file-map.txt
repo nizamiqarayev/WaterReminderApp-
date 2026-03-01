@@ -1,45 +1,68 @@
-com.example.waterreminder.app-lifecycle-runtime-ktx-release-0 C:\Users\ASUS\.gradle\caches\8.10\transforms\0246e508963f24d252b0695e8ed8db60\transformed\lifecycle-runtime-ktx-release\res
-com.example.waterreminder.app-profileinstaller-1.3.1-1 C:\Users\ASUS\.gradle\caches\8.10\transforms\0d56c35acad0b0b7a3a371d9ec3a79ff\transformed\profileinstaller-1.3.1\res
-com.example.waterreminder.app-lifecycle-viewmodel-release-2 C:\Users\ASUS\.gradle\caches\8.10\transforms\10cba1c05d8d735477dce107558d1488\transformed\lifecycle-viewmodel-release\res
-com.example.waterreminder.app-activity-compose-1.9.3-3 C:\Users\ASUS\.gradle\caches\8.10\transforms\1670a03076c0a47e3f4599c97b200f93\transformed\activity-compose-1.9.3\res
-com.example.waterreminder.app-lifecycle-runtime-compose-release-4 C:\Users\ASUS\.gradle\caches\8.10\transforms\2690e4d54f3acadd22ef117f6e535d98\transformed\lifecycle-runtime-compose-release\res
-com.example.waterreminder.app-annotation-experimental-1.4.1-5 C:\Users\ASUS\.gradle\caches\8.10\transforms\36dd58fcb27391b00b24215f576bb8d2\transformed\annotation-experimental-1.4.1\res
-com.example.waterreminder.app-customview-poolingcontainer-1.0.0-6 C:\Users\ASUS\.gradle\caches\8.10\transforms\38ee175403d4158e13a2479e9dee4fc5\transformed\customview-poolingcontainer-1.0.0\res
-com.example.waterreminder.app-runtime-saveable-release-7 C:\Users\ASUS\.gradle\caches\8.10\transforms\3bc21c442d6f6fee6eaa0b398f4d3149\transformed\runtime-saveable-release\res
-com.example.waterreminder.app-lifecycle-process-2.8.7-8 C:\Users\ASUS\.gradle\caches\8.10\transforms\4b4a54967f009091b3ea619b417ec025\transformed\lifecycle-process-2.8.7\res
-com.example.waterreminder.app-animation-core-release-9 C:\Users\ASUS\.gradle\caches\8.10\transforms\545f74484ce478974a2ebc643d1f5e6b\transformed\animation-core-release\res
-com.example.waterreminder.app-ui-unit-release-10 C:\Users\ASUS\.gradle\caches\8.10\transforms\6045334e77e349afb10f4651cf15baef\transformed\ui-unit-release\res
-com.example.waterreminder.app-tracing-1.2.0-11 C:\Users\ASUS\.gradle\caches\8.10\transforms\6342c163b8c1a9bb45c7db58c2802b0f\transformed\tracing-1.2.0\res
-com.example.waterreminder.app-runtime-release-12 C:\Users\ASUS\.gradle\caches\8.10\transforms\637acb0ef3a323881a69ba0e20991091\transformed\runtime-release\res
-com.example.waterreminder.app-ui-tooling-preview-release-13 C:\Users\ASUS\.gradle\caches\8.10\transforms\63d2bc24181759249f760db692ecb659\transformed\ui-tooling-preview-release\res
-com.example.waterreminder.app-activity-ktx-1.9.3-14 C:\Users\ASUS\.gradle\caches\8.10\transforms\660e4c185dac340a74f4d7c72e38dc5c\transformed\activity-ktx-1.9.3\res
-com.example.waterreminder.app-savedstate-ktx-1.2.1-15 C:\Users\ASUS\.gradle\caches\8.10\transforms\68ae12ca20f9ef525ac075cab6052b57\transformed\savedstate-ktx-1.2.1\res
-com.example.waterreminder.app-lifecycle-viewmodel-ktx-2.8.7-16 C:\Users\ASUS\.gradle\caches\8.10\transforms\6d80c2ed0f40769897b6e3746872875c\transformed\lifecycle-viewmodel-ktx-2.8.7\res
-com.example.waterreminder.app-lifecycle-livedata-core-2.8.7-17 C:\Users\ASUS\.gradle\caches\8.10\transforms\73d08a8ddbc59377200bc897c6c9d13e\transformed\lifecycle-livedata-core-2.8.7\res
-com.example.waterreminder.app-activity-1.9.3-18 C:\Users\ASUS\.gradle\caches\8.10\transforms\75bfb37fad0db00561965aee3f98a688\transformed\activity-1.9.3\res
-com.example.waterreminder.app-ui-util-release-19 C:\Users\ASUS\.gradle\caches\8.10\transforms\871559849d37c153fe6d7642e5ecd481\transformed\ui-util-release\res
-com.example.waterreminder.app-emoji2-1.3.0-20 C:\Users\ASUS\.gradle\caches\8.10\transforms\9295022a2cfcef0aa4b86e5986d44500\transformed\emoji2-1.3.0\res
-com.example.waterreminder.app-core-runtime-2.2.0-21 C:\Users\ASUS\.gradle\caches\8.10\transforms\92b0cb29846c5f38c33f8298e5951cf9\transformed\core-runtime-2.2.0\res
-com.example.waterreminder.app-ui-geometry-release-22 C:\Users\ASUS\.gradle\caches\8.10\transforms\941d9e9bf8df61bc9bcee4d19d519889\transformed\ui-geometry-release\res
-com.example.waterreminder.app-foundation-layout-release-23 C:\Users\ASUS\.gradle\caches\8.10\transforms\95c0191faca0699f4bf6cb9aa9b5114e\transformed\foundation-layout-release\res
-com.example.waterreminder.app-material-ripple-release-24 C:\Users\ASUS\.gradle\caches\8.10\transforms\99048a6236b86da1ac26a5cdd136dcec\transformed\material-ripple-release\res
-com.example.waterreminder.app-lifecycle-viewmodel-savedstate-2.8.7-25 C:\Users\ASUS\.gradle\caches\8.10\transforms\9ae7d8a10f0fe8d6c1901b1945e6dc00\transformed\lifecycle-viewmodel-savedstate-2.8.7\res
-com.example.waterreminder.app-startup-runtime-1.1.1-26 C:\Users\ASUS\.gradle\caches\8.10\transforms\9c344aefccc2f1885e4263ca8ea8eec3\transformed\startup-runtime-1.1.1\res
-com.example.waterreminder.app-savedstate-1.2.1-27 C:\Users\ASUS\.gradle\caches\8.10\transforms\9d839d56e6c4305480fe7cd3878db163\transformed\savedstate-1.2.1\res
-com.example.waterreminder.app-animation-release-28 C:\Users\ASUS\.gradle\caches\8.10\transforms\9e2ef2a133de812ebca0dcb55ac35e55\transformed\animation-release\res
-com.example.waterreminder.app-material3-release-29 C:\Users\ASUS\.gradle\caches\8.10\transforms\9e94c53758aac725f225b8494b86e925\transformed\material3-release\res
-com.example.waterreminder.app-graphics-path-1.0.1-30 C:\Users\ASUS\.gradle\caches\8.10\transforms\b3feba0b88a8abf0669d205695fce3ce\transformed\graphics-path-1.0.1\res
-com.example.waterreminder.app-core-1.15.0-31 C:\Users\ASUS\.gradle\caches\8.10\transforms\be557e24e199304947cf7faed863774e\transformed\core-1.15.0\res
-com.example.waterreminder.app-ui-graphics-release-32 C:\Users\ASUS\.gradle\caches\8.10\transforms\cdba3b1e9cd2df5110102d8776523503\transformed\ui-graphics-release\res
-com.example.waterreminder.app-foundation-release-33 C:\Users\ASUS\.gradle\caches\8.10\transforms\da58c26d0c9e8b347989356db0671844\transformed\foundation-release\res
-com.example.waterreminder.app-core-ktx-1.15.0-34 C:\Users\ASUS\.gradle\caches\8.10\transforms\e2bb23330179d8b599c34e63e1942df3\transformed\core-ktx-1.15.0\res
-com.example.waterreminder.app-ui-release-35 C:\Users\ASUS\.gradle\caches\8.10\transforms\e81c9325b3bbae87a250117176a95e45\transformed\ui-release\res
-com.example.waterreminder.app-ui-text-release-36 C:\Users\ASUS\.gradle\caches\8.10\transforms\f0739f86078a87e8075e5dd1c1374cd2\transformed\ui-text-release\res
-com.example.waterreminder.app-material-icons-core-release-37 C:\Users\ASUS\.gradle\caches\8.10\transforms\f40ba69ea6dea5e5e2dbd406b47ba211\transformed\material-icons-core-release\res
-com.example.waterreminder.app-lifecycle-runtime-release-38 C:\Users\ASUS\.gradle\caches\8.10\transforms\f5f4a71e6702f9e9127c28a7222d5e6b\transformed\lifecycle-runtime-release\res
-com.example.waterreminder.app-resValues-39 C:\Users\ASUS\Desktop\mobile app for fun\app\build\generated\res\resValues\debug
-com.example.waterreminder.app-packageDebugResources-40 C:\Users\ASUS\Desktop\mobile app for fun\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.example.waterreminder.app-packageDebugResources-41 C:\Users\ASUS\Desktop\mobile app for fun\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.example.waterreminder.app-debug-42 C:\Users\ASUS\Desktop\mobile app for fun\app\build\intermediates\merged_res\debug\mergeDebugResources
-com.example.waterreminder.app-debug-43 C:\Users\ASUS\Desktop\mobile app for fun\app\src\debug\res
-com.example.waterreminder.app-main-44 C:\Users\ASUS\Desktop\mobile app for fun\app\src\main\res
+com.example.waterreminder.app-ads-adservices-1.1.0-beta11-0 C:\Users\ASUS\.gradle\caches\8.10\transforms\055ba0457f8fef28ad3b5a37e02c8d17\transformed\ads-adservices-1.1.0-beta11\res
+com.example.waterreminder.app-emoji2-1.3.0-1 C:\Users\ASUS\.gradle\caches\8.10\transforms\0b66536836423235a14ffd7f354eaf73\transformed\emoji2-1.3.0\res
+com.example.waterreminder.app-firebase-common-22.0.1-2 C:\Users\ASUS\.gradle\caches\8.10\transforms\0ba43582ea3b8a13f91ea8d46d16b965\transformed\firebase-common-22.0.1\res
+com.example.waterreminder.app-runtime-release-3 C:\Users\ASUS\.gradle\caches\8.10\transforms\0ba8a594a0129cd3853ca76ee9b7f84b\transformed\runtime-release\res
+com.example.waterreminder.app-lifecycle-runtime-release-4 C:\Users\ASUS\.gradle\caches\8.10\transforms\10854081bb6a98681527ea532e0fd9f8\transformed\lifecycle-runtime-release\res
+com.example.waterreminder.app-datastore-core-release-5 C:\Users\ASUS\.gradle\caches\8.10\transforms\141c3a105aa0a152d1c653f573ee3586\transformed\datastore-core-release\res
+com.example.waterreminder.app-core-ktx-1.15.0-6 C:\Users\ASUS\.gradle\caches\8.10\transforms\17e98e5bc89873b3f2d34fe060daf46a\transformed\core-ktx-1.15.0\res
+com.example.waterreminder.app-lifecycle-runtime-compose-release-7 C:\Users\ASUS\.gradle\caches\8.10\transforms\1968bfe63a39ace490116a021b7981c1\transformed\lifecycle-runtime-compose-release\res
+com.example.waterreminder.app-browser-1.4.0-8 C:\Users\ASUS\.gradle\caches\8.10\transforms\1a198fd53f5697a2c3f0bdd81dbf7481\transformed\browser-1.4.0\res
+com.example.waterreminder.app-lifecycle-viewmodel-ktx-2.8.7-9 C:\Users\ASUS\.gradle\caches\8.10\transforms\2494e291f4cc070f2dca3668b6fab751\transformed\lifecycle-viewmodel-ktx-2.8.7\res
+com.example.waterreminder.app-material3-release-10 C:\Users\ASUS\.gradle\caches\8.10\transforms\2c49d4776a3a4f6302daaa5f68f88735\transformed\material3-release\res
+com.example.waterreminder.app-lifecycle-process-2.8.7-11 C:\Users\ASUS\.gradle\caches\8.10\transforms\3058d2ca118ae5f8e23995986ef3de7c\transformed\lifecycle-process-2.8.7\res
+com.example.waterreminder.app-annotation-experimental-1.4.1-12 C:\Users\ASUS\.gradle\caches\8.10\transforms\3103e122acfaf82ce59f4daf43ced99c\transformed\annotation-experimental-1.4.1\res
+com.example.waterreminder.app-navigation-common-2.7.7-13 C:\Users\ASUS\.gradle\caches\8.10\transforms\310e4de1c483b2f1239a3a85871b99db\transformed\navigation-common-2.7.7\res
+com.example.waterreminder.app-lifecycle-runtime-ktx-release-14 C:\Users\ASUS\.gradle\caches\8.10\transforms\32b373d4960e42ffada7712d122116d7\transformed\lifecycle-runtime-ktx-release\res
+com.example.waterreminder.app-credentials-1.2.0-rc01-15 C:\Users\ASUS\.gradle\caches\8.10\transforms\393844028f1e6f7b12050a0cd0f18a9e\transformed\credentials-1.2.0-rc01\res
+com.example.waterreminder.app-animation-core-release-16 C:\Users\ASUS\.gradle\caches\8.10\transforms\3d9e7c35e26d6a709dda242005377ffe\transformed\animation-core-release\res
+com.example.waterreminder.app-lifecycle-viewmodel-release-17 C:\Users\ASUS\.gradle\caches\8.10\transforms\3e5bf253dff625c9cefd0e356d4e6109\transformed\lifecycle-viewmodel-release\res
+com.example.waterreminder.app-material-ripple-release-18 C:\Users\ASUS\.gradle\caches\8.10\transforms\43af1e07191df91dbefe2b6a989d801d\transformed\material-ripple-release\res
+com.example.waterreminder.app-graphics-path-1.0.1-19 C:\Users\ASUS\.gradle\caches\8.10\transforms\57d67ed68c50340a0d0353d12909a55a\transformed\graphics-path-1.0.1\res
+com.example.waterreminder.app-credentials-play-services-auth-1.2.0-rc01-20 C:\Users\ASUS\.gradle\caches\8.10\transforms\5a696dd342ecc7df271df9ca0199d6c7\transformed\credentials-play-services-auth-1.2.0-rc01\res
+com.example.waterreminder.app-lifecycle-viewmodel-savedstate-2.8.7-21 C:\Users\ASUS\.gradle\caches\8.10\transforms\5c09640a3b1b761bdb2c8988e1704c7f\transformed\lifecycle-viewmodel-savedstate-2.8.7\res
+com.example.waterreminder.app-foundation-layout-release-22 C:\Users\ASUS\.gradle\caches\8.10\transforms\5fdec5777c7f8737a0d1b650612537f0\transformed\foundation-layout-release\res
+com.example.waterreminder.app-ui-graphics-release-23 C:\Users\ASUS\.gradle\caches\8.10\transforms\60fefa2d4fee3e985b50f40e96e04419\transformed\ui-graphics-release\res
+com.example.waterreminder.app-profileinstaller-1.3.1-24 C:\Users\ASUS\.gradle\caches\8.10\transforms\61215ea0e35cf7b553c5535b43ad35be\transformed\profileinstaller-1.3.1\res
+com.example.waterreminder.app-navigation-runtime-2.7.7-25 C:\Users\ASUS\.gradle\caches\8.10\transforms\6493c385d5d83abe95817d4ffc9d81af\transformed\navigation-runtime-2.7.7\res
+com.example.waterreminder.app-datastore-release-26 C:\Users\ASUS\.gradle\caches\8.10\transforms\68b8c9a58068ebd23bc7f08057be2723\transformed\datastore-release\res
+com.example.waterreminder.app-core-common-2.0.3-27 C:\Users\ASUS\.gradle\caches\8.10\transforms\7011256b16ba0447e1752caa6a3afb32\transformed\core-common-2.0.3\res
+com.example.waterreminder.app-lifecycle-livedata-2.8.7-28 C:\Users\ASUS\.gradle\caches\8.10\transforms\74808e8c8a3530b466c5bbbcc36bb80c\transformed\lifecycle-livedata-2.8.7\res
+com.example.waterreminder.app-ui-text-release-29 C:\Users\ASUS\.gradle\caches\8.10\transforms\74c3ad17d27208cd1d55d6f3c0777ca5\transformed\ui-text-release\res
+com.example.waterreminder.app-ui-release-30 C:\Users\ASUS\.gradle\caches\8.10\transforms\7c0d4eb598964a9f4e47a8444addc6aa\transformed\ui-release\res
+com.example.waterreminder.app-startup-runtime-1.1.1-31 C:\Users\ASUS\.gradle\caches\8.10\transforms\7d9980b38de395c6437070f123e684d7\transformed\startup-runtime-1.1.1\res
+com.example.waterreminder.app-lifecycle-livedata-core-2.8.7-32 C:\Users\ASUS\.gradle\caches\8.10\transforms\7dd51b4a924e2049831aaaf9c3fe0517\transformed\lifecycle-livedata-core-2.8.7\res
+com.example.waterreminder.app-activity-compose-1.9.3-33 C:\Users\ASUS\.gradle\caches\8.10\transforms\7e2445156cd9fabed0f4ba8065f3bdd6\transformed\activity-compose-1.9.3\res
+com.example.waterreminder.app-play-services-basement-18.9.0-34 C:\Users\ASUS\.gradle\caches\8.10\transforms\7fde8b83ddd438cb909a93a51f68a5c8\transformed\play-services-basement-18.9.0\res
+com.example.waterreminder.app-play-services-auth-20.7.0-35 C:\Users\ASUS\.gradle\caches\8.10\transforms\8549b7328e9318b2767650fdc54bee07\transformed\play-services-auth-20.7.0\res
+com.example.waterreminder.app-ui-geometry-release-36 C:\Users\ASUS\.gradle\caches\8.10\transforms\88237f5fef58cef4d6eaf2d4f61b5559\transformed\ui-geometry-release\res
+com.example.waterreminder.app-play-services-base-18.9.0-37 C:\Users\ASUS\.gradle\caches\8.10\transforms\88b3fa62e3f9255f95c0473bed01a542\transformed\play-services-base-18.9.0\res
+com.example.waterreminder.app-material-icons-core-release-38 C:\Users\ASUS\.gradle\caches\8.10\transforms\8c30c528610596386cde60b32618a0c6\transformed\material-icons-core-release\res
+com.example.waterreminder.app-core-runtime-2.2.0-39 C:\Users\ASUS\.gradle\caches\8.10\transforms\8f12bfedcea9f9a41a5b08dde24f7ad2\transformed\core-runtime-2.2.0\res
+com.example.waterreminder.app-savedstate-ktx-1.2.1-40 C:\Users\ASUS\.gradle\caches\8.10\transforms\8fb1c855e1ab598519e3c9ab302e7b2e\transformed\savedstate-ktx-1.2.1\res
+com.example.waterreminder.app-navigation-common-ktx-2.7.7-41 C:\Users\ASUS\.gradle\caches\8.10\transforms\978abed92b4ec4243cfcd8d1b0712203\transformed\navigation-common-ktx-2.7.7\res
+com.example.waterreminder.app-ui-tooling-preview-release-42 C:\Users\ASUS\.gradle\caches\8.10\transforms\9882a9f18dc3a4a00b4ecb2c554269c0\transformed\ui-tooling-preview-release\res
+com.example.waterreminder.app-ui-unit-release-43 C:\Users\ASUS\.gradle\caches\8.10\transforms\99bd6181ac5499eca61115f320b9b48e\transformed\ui-unit-release\res
+com.example.waterreminder.app-animation-release-44 C:\Users\ASUS\.gradle\caches\8.10\transforms\9d72955323839e1a9dc23ed68951d767\transformed\animation-release\res
+com.example.waterreminder.app-activity-ktx-1.9.3-45 C:\Users\ASUS\.gradle\caches\8.10\transforms\9eda7eb227ad1c1dd516ef5bf4f61eac\transformed\activity-ktx-1.9.3\res
+com.example.waterreminder.app-core-1.15.0-46 C:\Users\ASUS\.gradle\caches\8.10\transforms\a2787bf07e9d8b474f90ea5129539484\transformed\core-1.15.0\res
+com.example.waterreminder.app-lifecycle-viewmodel-compose-release-47 C:\Users\ASUS\.gradle\caches\8.10\transforms\a8f23a0ab57548113326e22d30326fa3\transformed\lifecycle-viewmodel-compose-release\res
+com.example.waterreminder.app-savedstate-1.2.1-48 C:\Users\ASUS\.gradle\caches\8.10\transforms\ab0c216ded04d25e2c0343fdcf8b8454\transformed\savedstate-1.2.1\res
+com.example.waterreminder.app-runtime-saveable-release-49 C:\Users\ASUS\.gradle\caches\8.10\transforms\b29f2199197b06d7387ccd2db866a897\transformed\runtime-saveable-release\res
+com.example.waterreminder.app-lifecycle-livedata-core-ktx-2.8.7-50 C:\Users\ASUS\.gradle\caches\8.10\transforms\b9e0b9aebb9ad5bf0bcbd28d320c626b\transformed\lifecycle-livedata-core-ktx-2.8.7\res
+com.example.waterreminder.app-ads-adservices-java-1.1.0-beta11-51 C:\Users\ASUS\.gradle\caches\8.10\transforms\d3027c163ca6b5e41ba40c609d3aaec7\transformed\ads-adservices-java-1.1.0-beta11\res
+com.example.waterreminder.app-ui-util-release-52 C:\Users\ASUS\.gradle\caches\8.10\transforms\d53117b4fcd963fc2141a2314d0f671b\transformed\ui-util-release\res
+com.example.waterreminder.app-activity-1.9.3-53 C:\Users\ASUS\.gradle\caches\8.10\transforms\d74294048c675068531f79ac108877a0\transformed\activity-1.9.3\res
+com.example.waterreminder.app-navigation-compose-2.7.7-54 C:\Users\ASUS\.gradle\caches\8.10\transforms\e3e2247ed71d2b8e7ce1cd09d348c0ec\transformed\navigation-compose-2.7.7\res
+com.example.waterreminder.app-navigation-runtime-ktx-2.7.7-55 C:\Users\ASUS\.gradle\caches\8.10\transforms\e5e71579b2e37309cd0d3f0596615900\transformed\navigation-runtime-ktx-2.7.7\res
+com.example.waterreminder.app-datastore-preferences-release-56 C:\Users\ASUS\.gradle\caches\8.10\transforms\e60275a32365bdcc8c5b625c12f7953d\transformed\datastore-preferences-release\res
+com.example.waterreminder.app-customview-poolingcontainer-1.0.0-57 C:\Users\ASUS\.gradle\caches\8.10\transforms\eb3f624bc53607be7b95e297c431c57a\transformed\customview-poolingcontainer-1.0.0\res
+com.example.waterreminder.app-tracing-1.2.0-58 C:\Users\ASUS\.gradle\caches\8.10\transforms\ef54dd95a6db3b6c97c252bfb9f0ede9\transformed\tracing-1.2.0\res
+com.example.waterreminder.app-datastore-preferences-core-release-59 C:\Users\ASUS\.gradle\caches\8.10\transforms\f00f18291b8fe76c6400261e12cfc054\transformed\datastore-preferences-core-release\res
+com.example.waterreminder.app-foundation-release-60 C:\Users\ASUS\.gradle\caches\8.10\transforms\fce8692a711c26e109b4c1edde95d5ad\transformed\foundation-release\res
+com.example.waterreminder.app-res-61 C:\Users\ASUS\Desktop\mobile app for fun\app\build\generated\res\processDebugGoogleServices
+com.example.waterreminder.app-resValues-62 C:\Users\ASUS\Desktop\mobile app for fun\app\build\generated\res\resValues\debug
+com.example.waterreminder.app-packageDebugResources-63 C:\Users\ASUS\Desktop\mobile app for fun\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.waterreminder.app-packageDebugResources-64 C:\Users\ASUS\Desktop\mobile app for fun\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.waterreminder.app-debug-65 C:\Users\ASUS\Desktop\mobile app for fun\app\build\intermediates\merged_res\debug\mergeDebugResources
+com.example.waterreminder.app-debug-66 C:\Users\ASUS\Desktop\mobile app for fun\app\src\debug\res
+com.example.waterreminder.app-main-67 C:\Users\ASUS\Desktop\mobile app for fun\app\src\main\res

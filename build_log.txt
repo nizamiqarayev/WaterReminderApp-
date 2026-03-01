@@ -1,0 +1,60 @@
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexDebug UP-TO-DATE
+> Task :app:mergeLibDexDebug UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDebugNativeLibs UP-TO-DATE
+> Task :app:stripDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:writeDebugSigningConfigVersions UP-TO-DATE
+
+> Task :app:compileDebugKotlin FAILED
+e: file:///C:/Users/ASUS/.gradle/caches/8.10/transforms/09edc920af78462151720d20d5af89f7/transformed/play-services-measurement-api-23.0.0-api.jar!/META-INF/java.com.google.android.gmscore.integ.client.measurement_api_measurement_api.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///C:/Users/ASUS/.gradle/caches/8.10/transforms/1cba72e9c37e36ca1da1197b9a674ae7/transformed/play-services-measurement-impl-23.0.0-api.jar!/META-INF/java.com.google.android.gms.libs.filecompliance.proto_file_access_api_type_kt_proto_lite.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///C:/Users/ASUS/.gradle/caches/8.10/transforms/1cba72e9c37e36ca1da1197b9a674ae7/transformed/play-services-measurement-impl-23.0.0-api.jar!/META-INF/third_party.kotlin.protobuf.src.commonMain.kotlin.com.google.protobuf.kotlin_only_for_use_in_proto_generated_code_its_generator_and_tests.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///C:/Users/ASUS/.gradle/caches/8.10/transforms/1cba72e9c37e36ca1da1197b9a674ae7/transformed/play-services-measurement-impl-23.0.0-api.jar!/META-INF/third_party.kotlin.protobuf.src.commonMain.kotlin.com.google.protobuf.kotlin_shared_runtime.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///C:/Users/ASUS/.gradle/caches/8.10/transforms/a2ef5b0643a94359e2a43a24e9589616/transformed/firebase-auth-24.0.1-api.jar!/META-INF/java.com.google.android.gmscore.integ.client.firebase-auth-api_firebase-auth-api.kotlin_moduleModule was compiled with an incompatible version of Kotlin. The binary version of its metadata is 2.1.0, expected version is 1.9.0.
+e: file:///C:/Users/ASUS/Desktop/mobile%20app%20for%20fun/app/src/main/java/com/example/waterreminder/auth/AuthManager.kt:4:33 Unresolved reference: ktx
+e: file:///C:/Users/ASUS/Desktop/mobile%20app%20for%20fun/app/src/main/java/com/example/waterreminder/auth/AuthManager.kt:5:28 Unresolved reference: ktx
+e: file:///C:/Users/ASUS/Desktop/mobile%20app%20for%20fun/app/src/main/java/com/example/waterreminder/auth/AuthManager.kt:9:38 Unresolved reference: Firebase
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:compileDebugKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 2s
+30 actionable tasks: 2 executed, 28 up-to-date

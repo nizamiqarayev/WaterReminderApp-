@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sip Sip 💧 Stay Hydrated</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Comfortaa:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #fdf6ec;
+      --peach: #fce4d0;
+      --sky: #b8dff5;
+      --sky-dark: #7ec8e3;
+      --sky-deep: #4ba8cc;
+      --blush: #f9d5d5;
+      --lavender: #e2d4f0;
+      --green: #c8e6c3;
+      --text: #4a3f35;
+      --text-light: #9b8a7e;
+      --white: #ffffff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--cream);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Floating blobs background */
+    .bg {
+      position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.45;
+    }
+    .blob-1 { width: 420px; height: 420px; background: var(--sky); top: -80px; right: -100px; animation: float1 8s ease-in-out infinite; }
+    .blob-2 { width: 300px; height: 300px; background: var(--peach); bottom: -60px; left: -60px; animation: float2 10s ease-in-out infinite; }
+    .blob-3 { width: 200px; height: 200px; background: var(--lavender); bottom: 30%; right: 5%; animation: float1 12s ease-in-out infinite reverse; }
+
+    @keyframes float1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-20px,20px)} }
+    @keyframes float2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(20px,-15px)} }
+
+    .phone {
+      position: relative; z-index: 1;
+      width: 360px;
+      background: var(--white);
+      border-radius: 40px;
+      box-shadow: 0 30px 80px rgba(100,140,180,0.2), 0 8px 20px rgba(0,0,0,0.07);
+      overflow: hidden;
+      padding: 0 0 32px;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #e8f6fd 0%, #d4eef9 100%);
+      padding: 36px 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; left: 0; right: 0;
+      height: 40px;
+      background: var(--white);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+    .greeting {
+      font-family: 'Comfortaa', cursive;
+      font-size: 13px;
+      color: var(--sky-deep);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .title {
+      font-family: 'Comfortaa', cursive;
+      font-size: 22px;
+      color: var(--text);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .stars {
+      position: absolute;
+      top: 20px; right: 28px;
+      font-size: 20px;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+
+    /* Cup Section */
+    .cup-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 28px 24px;
+    }
+
+    .cup-wrap {
+      position: relative;
+      width: 130px;
+      height: 160px;
+      margin-bottom: 20px;
+    }
+
+    /* SVG Cup */
+    .cup-svg { width: 130px; height: 160px; }
+
+    /* Water fill animation */
+    .water-fill {
+      transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Ripple on cup */
+    .ripple-container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* Emoji mascot */
+    .mascot {
+      font-size: 36px;
+      animation: bounce 2s ease-in-out infinite;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+    .water-count {
+      font-family: 'Comfortaa', cursive;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--sky-deep);
+      line-height: 1;
+    }
+    .water-count span {
+      font-size: 16px;
+      color: var(--text-light);
+      font-weight: 600;
+      margin-left: 4px;
+    }
+    .goal-text {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    /* Progress bar */
+    .progress-bar-wrap {
+      width: 100%;
+      margin: 18px 0;
+      background: var(--peach);
+      border-radius: 999px;
+      height: 14px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--sky-dark), var(--sky-deep));
+      border-radius: 999px;
+      transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+    }
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 2px; bottom: 2px;
+      width: 6px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 999px;
+    }
+
+    /* Message bubble */
+    .message {
+      background: var(--peach);
+      border-radius: 20px;
+      padding: 12px 18px;
+      font-size: 13px;
+      color: var(--text);
+      text-align: center;
+      line-height: 1.5;
+      margin: 0 28px 20px;
+      animation: fadein 0.5s ease;
+      position: relative;
+    }
+    .message::before {
+      content: '💬';
+      font-size: 16px;
+      margin-right: 6px;
+    }
+    @keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+    /* Drink button */
+    .drink-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 28px;
+      padding: 16px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sky-dark), var(--sky-deep));
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 24px rgba(75, 168, 204, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+      position: relative;
+      overflow: hidden;
+      width: calc(100% - 56px);
+    }
+    .drink-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(75, 168, 204, 0.45); }
+    .drink-btn:active { transform: scale(0.97); }
+    .drink-btn .drop { font-size: 20px; animation: drip 1.5s ease-in-out infinite; }
+    @keyframes drip { 0%,100%{transform:translateY(0)} 60%{transform:translateY(4px)} }
+
+    /* Splash effect */
+    .splash {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      animation: splash 0.6s ease-out forwards;
+      pointer-events: none;
+    }
+    @keyframes splash { from{width:0;height:0;opacity:1} to{width:200px;height:200px;opacity:0;margin-left:-100px;margin-top:-100px} }
+
+    /* Cups grid */
+    .cups-section {
+      padding: 20px 28px 0;
+    }
+    .cups-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+    .cups-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .cup-icon {
+      font-size: 22px;
+      width: 40px; height: 40px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s;
+    }
+    .cup-icon.filled { background: var(--sky); animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    .cup-icon.empty  { background: var(--peach); opacity: 0.5; }
+    @keyframes popIn { from{transform:scale(0)} to{transform:scale(1)} }
+
+    /* Reminder section */
+    .reminder-section {
+      margin: 20px 28px 0;
+      background: linear-gradient(135deg, #f0faf0, #ddf4dd);
+      border-radius: 20px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .reminder-icon { font-size: 28px; }
+    .reminder-text { flex: 1; }
+    .reminder-text strong { font-size: 13px; color: var(--text); display: block; }
+    .reminder-text small { font-size: 11px; color: var(--text-light); }
+    .toggle {
+      width: 44px; height: 24px;
+      background: var(--sky-dark);
+      border-radius: 999px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s;
+      flex-shrink: 0;
+    }
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: white;
+      border-radius: 50%;
+      transition: left 0.3s;
+    }
+    .toggle.off { background: #ddd; }
+    .toggle.off::after { left: 23px; }
+
+    /* Reset */
+    .reset-btn {
+      background: none;
+      border: 2px solid var(--peach);
+      color: var(--text-light);
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: block;
+      margin: 18px auto 0;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover { background: var(--peach); color: var(--text); }
+
+    /* Celebration overlay */
+    .celebration {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(180, 220, 245, 0.85);
+      backdrop-filter: blur(6px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    .celebration.show { opacity: 1; pointer-events: all; }
+    .celebration .big-emoji { font-size: 80px; animation: bigbounce 0.6s ease infinite alternate; }
+    @keyframes bigbounce { from{transform:scale(1)} to{transform:scale(1.15)} }
+    .celebration h2 { font-family: 'Comfortaa', cursive; font-size: 26px; color: var(--text); margin: 16px 0 8px; text-align:center; }
+    .celebration p { font-size: 14px; color: var(--text-light); text-align:center; }
+    .celebration .close-btn {
+      margin-top: 24px;
+      background: var(--sky-deep);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 28px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    /* Confetti */
+    .confetti-piece {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      animation: confetti-fall linear forwards;
+      z-index: 200;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="bg">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<div class="phone">
+  <div class="header">
+    <div class="greeting">Good morning, ☀️</div>
+    <div class="title">Stay hydrated today!</div>
+    <div class="stars">✨</div>
+  </div>
+
+  <div class="cup-section">
+    <div class="mascot" id="mascot">🐸</div>
+
+    <!-- Animated SVG Cup -->
+    <div class="cup-wrap">
+      <svg class="cup-svg" viewBox="0 0 130 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <clipPath id="cupClip">
+            <path d="M18 30 L112 30 L100 148 Q65 158 30 148 Z"/>
+          </clipPath>
+          <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#b8dff5"/>
+            <stop offset="100%" stop-color="#4ba8cc"/>
+          </linearGradient>
+          <linearGradient id="cupGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#e0f2fc"/>
+            <stop offset="100%" stop-color="#c8eaf8"/>
+          </linearGradient>
+        </defs>
+        <!-- Cup body background -->
+        <path d="M18 30 L112 30 L100 148 Q65 158 30 148 Z" fill="url(#cupGrad)" stroke="#9dd4ef" stroke-width="2"/>
+        <!-- Water fill (clipped) -->
+        <g clip-path="url(#cupClip)">
+          <rect id="waterRect" x="0" y="160" width="130" height="130" fill="url(#waterGrad)" class="water-fill"/>
+          <!-- Animated waves on water surface -->
+          <ellipse id="waveSurface" cx="65" cy="160" rx="50" ry="6" fill="#7ec8e3" opacity="0.6"/>
+        </g>
+        <!-- Cup rim -->
+        <path d="M14 28 Q65 22 116 28" stroke="#9dd4ef" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Straw -->
+        <rect x="78" y="8" width="7" height="60" rx="3.5" fill="#fce4d0" stroke="#f9c9b0" stroke-width="1"/>
+        <!-- Shine -->
+        <path d="M28 50 Q32 80 30 115" stroke="rgba(255,255,255,0.7)" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <div class="water-count" id="waterCount">0 <span>/ 8 cups</span></div>
+    <div class="goal-text">daily hydration goal 💧</div>
+
+    <div class="progress-bar-wrap" style="margin-top:16px">
+      <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="message" id="message">Drink your first cup of water today! You can do it! 🌸</div>
+
+  <button class="drink-btn" id="drinkBtn" onclick="drinkWater(event)">
+    <span class="drop">💧</span>
+    I drank a cup!
+  </button>
+
+  <div class="cups-section">
+    <div class="cups-label">Today's cups</div>
+    <div class="cups-grid" id="cupsGrid"></div>
+  </div>
+
+  <div class="reminder-section">
+    <div class="reminder-icon">⏰</div>
+    <div class="reminder-text">
+      <strong>Hourly reminders</strong>
+      <small>Gentle nudges every hour</small>
+    </div>
+    <div class="toggle" id="reminderToggle" onclick="toggleReminder()"></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetDay()">↩ Reset today</button>
+</div>
+
+<!-- Celebration overlay -->
+<div class="celebration" id="celebration">
+  <div class="big-emoji">🎉</div>
+  <h2>You did it, superstar! 🌟</h2>
+  <p>You've drunk all 8 cups today!<br/>Your body thanks you! 💙</p>
+  <button class="close-btn" onclick="closeCelebration()">Yay! 🎊</button>
+</div>
+
+<script>
+  let cups = 0;
+  const GOAL = 8;
+  let reminderOn = true;
+  let reminderInterval = null;
+
+  const messages = [
+    "Great start! Keep it up, you're doing amazing! 🌸",
+    "Sip sip hooray! Two cups down! 🎉",
+    "Halfway there! Your skin is glowing already ✨",
+    "You're doing so well! Just a few more cups 💪",
+    "Almost there! One more push! 🌊",
+    "Look at you go! So close to your goal! 🌟",
+    "One more and you're done! You've got this! 🍀",
+    "WOW! You reached your goal today! Amazing! 🎊",
+  ];
+
+  const mascots = ['🐸', '🦋', '🌸', '🐬', '✨', '🦄', '🌊', '🎉'];
+
+  function updateUI() {
+    // Water level in cup SVG (fills from bottom)
+    const pct = cups / GOAL;
+    const maxFill = 118; // px from top of viewbox that is "full"
+    const waterTop = 160 - pct * 130;
+    document.getElementById('waterRect').setAttribute('y', waterTop);
+    document.getElementById('waveSurface').setAttribute('cy', waterTop);
+
+    // Progress bar
+    document.getElementById('progressBar').style.width = (pct * 100) + '%';
+
+    // Count text
+    document.getElementById('waterCount').innerHTML = `${cups} <span>/ ${GOAL} cups</span>`;
+
+    // Message
+    if (cups > 0 && cups <= messages.length) {
+      const msgEl = document.getElementById('message');
+      msgEl.style.animation = 'none';
+      msgEl.offsetHeight; // reflow
+      msgEl.style.animation = 'fadein 0.5s ease';
+      msgEl.textContent = '';
+      const span = document.createElement('span');
+      span.textContent = messages[cups - 1];
+      msgEl.appendChild(span);
+    }
+
+    // Mascot
+    document.getElementById('mascot').textContent = mascots[Math.min(cups, 7)];
+
+    // Cups grid
+    const grid = document.getElementById('cupsGrid');
+    grid.innerHTML = '';
+    for (let i = 0; i < GOAL; i++) {
+      const div = document.createElement('div');
+      div.className = 'cup-icon ' + (i < cups ? 'filled' : 'empty');
+      div.textContent = i < cups ? '🥛' : '🫙';
+      grid.appendChild(div);
+    }
+
+    // Disable button if done
+    document.getElementById('drinkBtn').disabled = cups >= GOAL;
+    document.getElementById('drinkBtn').style.opacity = cups >= GOAL ? '0.5' : '1';
+  }
+
+  function drinkWater(e) {
+    if (cups >= GOAL) return;
+    cups++;
+
+    // Splash ripple on button
+    const btn = document.getElementById('drinkBtn');
+    const rect = btn.getBoundingClientRect();
+    const splash = document.createElement('div');
+    splash.className = 'splash';
+    splash.style.left = (e.clientX - rect.left) + 'px';
+    splash.style.top = (e.clientY - rect.top) + 'px';
+    btn.appendChild(splash);
+    setTimeout(() => splash.remove(), 600);
+
+    updateUI();
+
+    if (cups === GOAL) {
+      setTimeout(() => {
+        launchConfetti();
+        document.getElementById('celebration').classList.add('show');
+      }, 800);
+    }
+  }
+
+  function launchConfetti() {
+    const colors = ['#b8dff5', '#fce4d0', '#e2d4f0', '#c8e6c3', '#f9d5d5', '#7ec8e3'];
+    for (let i = 0; i < 60; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = Math.random() * 100 + 'vw';
+      piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      piece.style.animationDelay = Math.random() * 1 + 's';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 4000);
+    }
+  }
+
+  function closeCelebration() {
+    document.getElementById('celebration').classList.remove('show');
+  }
+
+  function toggleReminder() {
+    reminderOn = !reminderOn;
+    const toggle = document.getElementById('reminderToggle');
+    toggle.classList.toggle('off', !reminderOn);
+    if (reminderOn) startReminder();
+    else { clearInterval(reminderInterval); }
+  }
+
+  function startReminder() {
+    clearInterval(reminderInterval);
+    reminderInterval = setInterval(() => {
+      if (cups < GOAL) {
+        // Flash the page gently
+        document.body.style.transition = 'background 0.3s';
+        document.body.style.background = '#d4eef9';
+        setTimeout(() => document.body.style.background = '', 600);
+        // In a real app, this would fire a notification
+      }
+    }, 60 * 60 * 1000); // every hour
+  }
+
+  function resetDay() {
+    cups = 0;
+    updateUI();
+    // Reset message
+    document.getElementById('message').innerHTML = 'Drink your first cup of water today! You can do it! 🌸';
+  }
+
+  // Init
+  updateUI();
+  startReminder();
+</script>
+</body>
+</html>
