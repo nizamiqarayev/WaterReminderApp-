@@ -59,15 +59,9 @@ workflows:
           cd iosApp
           pod install --repo-update
 
-      # 6. Build shared KMP framework — now FirebaseCore can be found
-      #    This compiles your commonMain + iosMain Kotlin into a .framework
-      - name: Build KMP shared framework (iOS)
-        script: |
-          ./gradlew :shared:linkPodReleaseFrameworkIosArm64
-          # For simulator use: linkPodReleaseFrameworkIosSimulatorArm64
-
-      # 5. Build the iOS app (unsigned — required for free Apple ID)
-      #    CODE_SIGN_IDENTITY="" disables signing so it builds without certs
+      # 6. Build iOS app — xcodebuild will automatically trigger
+      #    :shared:linkPodReleaseFrameworkIosArm64 with the correct
+      #    Firebase framework search paths from CocoaPods
       - name: Build iOS app (unsigned IPA)
         script: |
           xcodebuild \
