@@ -43,16 +43,41 @@ workflows:
           cd iosApp
           pod install --repo-update
 
-      # Fix: the iosApp Xcode project from KMP Wizard hardcodes 'composeApp'
-      # but this project's module is named 'shared' — patch it here.
-      - name: Fix composeApp -> shared in iosApp Xcode project
+      - name: Fix composeApp reference in iosApp project
         script: |
           PBXPROJ="iosApp/iosApp.xcodeproj/project.pbxproj"
-          echo "=== Before patch ==="
-          grep -n 'composeApp' "$PBXPROJ" || echo "No composeApp references found"
-          sed -i '' 's/composeApp/shared/g' "$PBXPROJ"
-          echo "=== After patch ==="
-          grep -n 'shared' "$PBXPROJ" | grep -i 'embed\|kotlin\|framework' || echo "Done"
+          grep -q 'composeApp' "$PBXPROJ" && \
+            sed -i '' 's/composeApp/shared/g' "$PBXPROJ" && \
+            echo "Patched composeApp -> shared" || \
+            echo "No composeApp references found"
+
+      - name: Inject JAVA_HOME into shared pod build phase
+        script: |
+          JAVA_HOME_VAL=$(/usr/libexec/java_home)
+          echo "Injecting JAVA_HOME: $JAVA_HOME_VAL"
+
+          # Use xcodeproj gem (already installed with CocoaPods) to safely
+          # patch the shellScript without corrupting pbxproj JSON escaping
+          ruby - "$JAVA_HOME_VAL" << 'RUBYEOF'
+          require 'xcodeproj'
+          java_home = ARGV[0]
+          injection = "export JAVA_HOME=\"#{java_home}\"\nexport PATH=\"$JAVA_HOME/bin:$PATH\"\n"
+
+          project = Xcodeproj::Project.open('iosApp/Pods/Pods.xcodeproj')
+          project.targets.each do |target|
+            next unless target.name == 'shared'
+            target.build_phases.each do |phase|
+              next unless phase.is_a?(Xcodeproj::Project::Object::PBXShellScriptBuildPhase)
+              next unless phase.shell_script&.include?('gradlew')
+              unless phase.shell_script.include?('JAVA_HOME')
+                puts "Patching build phase: #{phase.display_name}"
+                phase.shell_script = injection + phase.shell_script
+                puts "Done."
+              end
+            end
+          end
+          project.save
+          RUBYEOF
 
       - name: Build iOS app (unsigned IPA)
         script: |
