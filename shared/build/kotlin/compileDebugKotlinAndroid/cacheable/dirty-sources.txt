@@ -1,0 +1,1 @@
+C:\Users\ASUS\Desktop\mobile app for fun\shared\src\commonMain\kotlin\com\example\waterreminder\auth\AuthManager.kt

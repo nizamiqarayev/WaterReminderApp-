@@ -1,0 +1,12 @@
+platform :ios, '14.0'
+
+target 'iosApp' do
+  use_frameworks!
+
+  # KMP shared module
+  pod 'shared', :path => '../shared'
+
+  # Firebase native iOS frameworks (required by gitlive)
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+end

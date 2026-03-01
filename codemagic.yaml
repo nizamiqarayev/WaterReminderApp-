@@ -15,7 +15,8 @@ workflows:
         # Name of your Xcode scheme (usually same as your app name)
         XCODE_SCHEME: "iosApp"
         # Path to your .xcodeproj or .xcworkspace (relative to repo root)
-        XCODE_PROJECT: "iosApp/iosApp.xcodeproj"
+        # ⚠️ After pod install you MUST use .xcworkspace, not .xcodeproj
+        XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
 
     # ─── Triggering (optional) ──────────────────────────────────────
     triggering:
@@ -46,12 +47,23 @@ workflows:
       - name: List Gradle projects
         script: ./gradlew projects
 
-      # 4. Build shared KMP framework for iOS
+
+      # 4. Generate the podspec from the shared KMP module
+      - name: Generate KMP podspec
+        script: ./gradlew :shared:generateDummyFramework
+
+      # 5. Install CocoaPods — fetches FirebaseCore, FirebaseAuth, FirebaseFirestore etc.
+      - name: Install CocoaPods
+        script: |
+          gem install cocoapods --no-document
+          cd iosApp
+          pod install --repo-update
+
+      # 6. Build shared KMP framework — now FirebaseCore can be found
       #    This compiles your commonMain + iosMain Kotlin into a .framework
       - name: Build KMP shared framework (iOS)
         script: |
           ./gradlew :shared:linkPodReleaseFrameworkIosArm64
-          # This is the correct task when using the kotlin("native.cocoapods") plugin
           # For simulator use: linkPodReleaseFrameworkIosSimulatorArm64
 
       # 5. Build the iOS app (unsigned — required for free Apple ID)
@@ -59,7 +71,7 @@ workflows:
       - name: Build iOS app (unsigned IPA)
         script: |
           xcodebuild \
-            -project "$XCODE_PROJECT" \
+            -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
             -configuration Release \
             -sdk iphoneos \
