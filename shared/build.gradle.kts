@@ -29,8 +29,10 @@ kotlin {
     }
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
-        compilations.getByName("main").cinterops.all {
-            extraOpts("-compiler-options", "-fno-modules")
+        compilations.configureEach {
+            cinterops.configureEach {
+                extraOpts("-compiler-options", "-fno-modules")
+            }
         }
     }
 
