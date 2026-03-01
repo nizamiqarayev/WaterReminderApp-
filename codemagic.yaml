@@ -28,7 +28,11 @@ workflows:
     # ─── Build Steps ────────────────────────────────────────────────
     scripts:
 
-      # 1. Print environment info for debugging
+      # 1. Make gradlew executable FIRST (must be before any ./gradlew call)
+      - name: Set Gradle permissions
+        script: chmod +x gradlew
+
+      # 2. Print environment info for debugging
       - name: Check environment
         script: |
           echo "Xcode version:"
@@ -37,10 +41,6 @@ workflows:
           java -version
           echo "Kotlin/Gradle version:"
           ./gradlew --version
-
-      # 2. Make gradlew executable
-      - name: Set Gradle permissions
-        script: chmod +x gradlew
 
       # 3. Build shared KMP framework for iOS
       #    This compiles your commonMain + iosMain Kotlin into a .framework
