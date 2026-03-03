@@ -50,6 +50,15 @@ workflows:
           cd iosApp
           pod install --repo-update
 
+      - name: Show shared pod build script
+        script: |
+          echo "=== Contents of shared pod support files ==="
+          ls "iosApp/Pods/Target Support Files/shared/" || echo "Directory not found"
+          for f in "iosApp/Pods/Target Support Files/shared/"*.sh; do
+            echo "--- $f ---"
+            cat "$f"
+          done
+          
       - name: Fix composeApp reference in iosApp project
         script: |
           PBXPROJ="iosApp/iosApp.xcodeproj/project.pbxproj"
