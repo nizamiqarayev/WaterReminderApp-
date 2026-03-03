@@ -72,7 +72,11 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-            build
+            build 2>&1 | tee /tmp/build.log
+          BUILD_EXIT=${PIPESTATUS[0]}
+          echo "=== KEY ERRORS ==="
+          grep -E 'error:|Exception|FAILED|linkPod|gradlew|Build shared' /tmp/build.log | head -60
+          exit $BUILD_EXIT
 
       - name: Package into .ipa
         script: |
