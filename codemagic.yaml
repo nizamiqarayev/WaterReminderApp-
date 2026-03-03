@@ -7,14 +7,13 @@ workflows:
 
     environment:
       java: 17
-      xcode: 16.1
+      xcode: latest
       vars:
-        BUNDLE_ID: "com.example.waterreminder"
+        BUNDLE_ID: "com.yourname.yourapp"
         XCODE_SCHEME: "iosApp"
         XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
+        # Globally inherited by ALL subprocesses including xcodebuild build phases
         JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
-        # These flags sometimes help clang in cinterop find the right headers
-        C_INCLUDE_PATH: /Applications/Xcode-16.1.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/usr/include
 
     triggering:
       events:
@@ -32,12 +31,10 @@ workflows:
         script: |
           echo "JAVA_HOME=$JAVA_HOME"
           java -version
-          # If the zulu-17 path doesn't exist, find the correct one and fail loudly
           if [ ! -d "$JAVA_HOME" ]; then
-            echo "ERROR: JAVA_HOME path does not exist: $JAVA_HOME"
-            echo "Available JDKs:"
+            echo "ERROR: JAVA_HOME not found. Available JDKs:"
             ls /Library/Java/JavaVirtualMachines/
-            echo "Update the JAVA_HOME var in codemagic.yaml to match one of the above"
+            echo "Update JAVA_HOME in codemagic.yaml vars to match one of the above"
             exit 1
           fi
 
@@ -61,23 +58,10 @@ workflows:
             echo "Patched composeApp -> shared" || \
             echo "No composeApp references, skipping"
 
-      # Run the KMP Gradle build manually BEFORE xcodebuild.
-      # This pre-builds the shared.framework so when xcodebuild hits the
-      # [CP-User] Build shared phase, the framework already exists and
-      # Gradle either skips or succeeds instantly.
-      - name: Pre-build KMP shared framework
-        script: |
-          echo "JAVA_HOME=$JAVA_HOME"
-          export PATH="$JAVA_HOME/bin:$PATH"
-          ./gradlew :shared:linkPodReleaseFrameworkIosArm64 \
-            -Pkotlin.native.preconfigured.headers.enabled=false
-
+      # xcodebuild runs [CP-User] Build shared internally.
+      # JAVA_HOME from vars above is inherited by all subprocesses.
       - name: Build iOS app (unsigned IPA)
         script: |
-          sudo xcode-select -s /Applications/Xcode-16.1.app/Contents/Developer
-          echo "JAVA_HOME=$JAVA_HOME"
-          export PATH="$JAVA_HOME/bin:$PATH"
-
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
