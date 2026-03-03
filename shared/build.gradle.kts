@@ -24,8 +24,14 @@ kotlin {
             baseName = "shared"
         }
         pod("FirebaseCore") { version = ">= 10.0" }
-        pod("FirebaseAuth") { version = ">= 10.0" }
-        pod("FirebaseFirestore") { version = ">= 10.0" }
+       pod("FirebaseAuth") {
+        version = ">= 10.0"
+        extraOpts += listOf("-compiler-option", "-fmodules")  // ← add this
+    }
+    pod("FirebaseFirestore") {
+        version = ">= 10.0"
+        extraOpts += listOf("-compiler-option", "-fmodules")  // ← add this
+    }
     }
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
