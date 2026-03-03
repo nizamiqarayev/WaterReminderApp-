@@ -23,23 +23,7 @@ kotlin {
         framework {
             baseName = "shared"
         }
-        pod("FirebaseCore") { version = ">= 10.0" }
-       pod("FirebaseAuth") {
-        version = ">= 10.0"
-        extraOpts += listOf("-compiler-option", "-fmodules")  // ← add this
-    }
-    pod("FirebaseFirestore") {
-        version = ">= 10.0"
-        extraOpts += listOf("-compiler-option", "-fmodules")  // ← add this
-    }
-    }
-
-    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
-        compilations.configureEach {
-            cinterops.configureEach {
-                extraOpts("-compiler-options", "-fno-modules -D_DARWIN_C_SOURCE")
-            }
-        }
+        // ✅ No pod() declarations here — gitlive bundles its own interop
     }
 
     sourceSets {
@@ -52,8 +36,6 @@ kotlin {
             implementation("com.google.firebase:firebase-auth:22.3.1")
             implementation("com.google.firebase:firebase-firestore:24.11.0")
         }
-        // iosMain is now auto-created by the default hierarchy template
-        // Put iOS-specific code in: shared/src/iosMain/kotlin/
     }
 }
 
