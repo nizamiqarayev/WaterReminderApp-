@@ -12,7 +12,6 @@ workflows:
         BUNDLE_ID: "com.yourname.yourapp"
         XCODE_SCHEME: "iosApp"
         XCODE_PROJECT: "iosApp/iosApp.xcworkspace"
-        # Globally inherited by ALL subprocesses including xcodebuild build phases
         JAVA_HOME: /Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 
     triggering:
@@ -41,39 +40,43 @@ workflows:
       - name: List Gradle projects
         script: ./gradlew projects
 
-      - name: Generate KMP podspec
-        script: ./gradlew :shared:generateDummyFramework
+      - name: Generate shared.podspec
+        script: |
+          echo "Generating podspec..."
+          ./gradlew :shared:podspec
+          
+          echo "=== Generated podspec ==="
+          cat shared/shared.podspec
+
+      - name: Patch podspec for Codemagic environment
+        script: |
+          PODSPEC="shared/shared.podspec"
+          
+          echo "=== Before patching ==="
+          grep "REPO_ROOT" "$PODSPEC" || true
+          
+          # Replace PODS_TARGET_SRCROOT with SRCROOT-based path
+          sed -i '' 's|REPO_ROOT="\$PODS_TARGET_SRCROOT"|REPO_ROOT="\$SRCROOT/../shared"|g' "$PODSPEC"
+          
+          echo "=== After patching ==="
+          grep "REPO_ROOT" "$PODSPEC" || true
+          
+          echo "=== Full script_phases section ==="
+          sed -n '/script_phases/,/end/p' "$PODSPEC"
 
       - name: Install CocoaPods
         script: |
-          gem install cocoapods --no-document
           cd iosApp
           pod install --repo-update
 
-      - name: Show embedded Gradle build script from pbxproj
+      - name: Verify installation
         script: |
-          echo "=== Gradle shellScript in Pods.xcodeproj ==="
-          grep -A 5 'shellScript' iosApp/Pods/Pods.xcodeproj/project.pbxproj | grep -A 5 'gradlew'
+          echo "=== Checking shared pod ==="
+          ls -la iosApp/Pods/shared/ || echo "shared pod directory not found"
+          
+          echo "=== Checking Target Support Files ==="
+          ls -la "iosApp/Pods/Target Support Files/shared/" || echo "Support files not found"
 
-      - name: Show shared pod build script
-        script: |
-          echo "=== Contents of shared pod support files ==="
-          ls "iosApp/Pods/Target Support Files/shared/" || echo "Directory not found"
-          for f in "iosApp/Pods/Target Support Files/shared/"*.sh; do
-            echo "--- $f ---"
-            cat "$f"
-          done
-        
-      - name: Fix composeApp reference in iosApp project
-        script: |
-          PBXPROJ="iosApp/iosApp.xcodeproj/project.pbxproj"
-          grep -q 'composeApp' "$PBXPROJ" && \
-            sed -i '' 's/composeApp/shared/g' "$PBXPROJ" && \
-            echo "Patched composeApp -> shared" || \
-            echo "No composeApp references, skipping"
-
-      # xcodebuild runs [CP-User] Build shared internally.
-      # JAVA_HOME from vars above is inherited by all subprocesses.
       - name: Build iOS app (unsigned IPA)
         script: |
           xcodebuild \
@@ -86,15 +89,7 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-            build || true
-
-          echo "=== Actual executed script ==="
-          cat build/ios/Build/Intermediates.noindex/Pods.build/Release-iphoneos/shared.build/Script-*.sh 2>/dev/null || echo "Script file not found"
-
-          echo "=== Re-running script manually with bash -x ==="
-          for s in build/ios/Build/Intermediates.noindex/Pods.build/Release-iphoneos/shared.build/Script-*.sh; do
-            bash -x "$s" 2>&1 | tail -50
-          done
+            build
 
       - name: Package into .ipa
         script: |
@@ -103,16 +98,4 @@ workflows:
           cd output
           zip -r "../$XCODE_SCHEME.ipa" Payload
           cd ..
-          echo "IPA ready: $XCODE_SCHEME.ipa"
-
-    artifacts:
-      - "*.ipa"
-      - build/ios/Build/Products/**/*.app
-
-    publishing:
-      email:
-        recipients:
-          - nizamiqarayev59@gmail.com
-        notify:
-          success: true
-          failure: true
+          echo "I

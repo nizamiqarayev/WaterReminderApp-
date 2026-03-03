@@ -20,10 +20,12 @@ kotlin {
         homepage = "https://github.com/nizamiqarayev/WaterReminderApp"
         version = "1.0"
         ios.deploymentTarget = "14.0"
+        podfile = project.file("../iosApp/Podfile")
+        
         framework {
             baseName = "shared"
+            isStatic = true
         }
-        // ✅ No pod() declarations here — gitlive bundles its own interop
     }
 
     sourceSets {
