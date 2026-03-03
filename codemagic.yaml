@@ -74,11 +74,37 @@ workflows:
           echo "=== Checking shared pod ==="
           ls -la iosApp/Pods/shared/ || echo "shared pod directory not found"
           
-          echo "=== Checking Target Support Files ==="
-          ls -la "iosApp/Pods/Target Support Files/shared/" || echo "Support files not found"
+          echo "=== Generated build script content ==="
+          SCRIPT_DIR="iosApp/Pods/Target Support Files/shared"
+          if [ -d "$SCRIPT_DIR" ]; then
+            for script in "$SCRIPT_DIR"/*.sh; do
+              if [ -f "$script" ]; then
+                echo "--- Content of $script ---"
+                cat "$script"
+                echo ""
+              fi
+            done
+          fi
+
+      - name: Test Gradle syncFramework manually
+        script: |
+          echo "=== Testing Gradle command manually before xcodebuild ==="
+          cd shared
+          ../gradlew :shared:syncFramework \
+            -Pkotlin.native.cocoapods.platform=iphoneos \
+            -Pkotlin.native.cocoapods.archs="arm64" \
+            -Pkotlin.native.cocoapods.configuration="Release" || {
+              echo "Gradle syncFramework FAILED"
+              exit 1
+            }
+          cd ..
+          echo "=== Gradle syncFramework succeeded ==="
 
       - name: Build iOS app (unsigned IPA)
         script: |
+          set -e
+          set -o pipefail
+          
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -89,7 +115,27 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-            build
+            build 2>&1 | tee build.log || {
+              echo ""
+              echo "=== BUILD FAILED - Showing last 100 lines ==="
+              tail -100 build.log
+              
+              echo ""
+              echo "=== Checking generated script that failed ==="
+              SCRIPT_FILE=$(find build/ios/Build/Intermediates.noindex/Pods.build/Release-iphoneos/shared.build -name "Script-*.sh" | head -1)
+              if [ -f "$SCRIPT_FILE" ]; then
+                echo "--- Content of failed script: $SCRIPT_FILE ---"
+                cat "$SCRIPT_FILE"
+                
+                echo ""
+                echo "=== Running script manually with bash -x ==="
+                cd iosApp
+                bash -x "$SCRIPT_FILE" 2>&1 | tail -50 || true
+                cd ..
+              fi
+              
+              exit 1
+            }
 
       - name: Package into .ipa
         script: |
@@ -98,4 +144,17 @@ workflows:
           cd output
           zip -r "../$XCODE_SCHEME.ipa" Payload
           cd ..
-          echo "I
+          echo "IPA ready: $XCODE_SCHEME.ipa"
+
+    artifacts:
+      - "*.ipa"
+      - build/ios/Build/Products/**/*.app
+      - build.log
+
+    publishing:
+      email:
+        recipients:
+          - nizamiqarayev59@gmail.com
+        notify:
+          success: true
+          failure: true
