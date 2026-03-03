@@ -84,6 +84,16 @@ workflows:
             echo "No patching needed"
           fi
 
+      - name: Fix Swift imports (ComposeApp -> shared)
+        script: |
+          echo "=== Fixing Swift imports ==="
+          
+          # Find all Swift files and replace ComposeApp with shared
+          find iosApp/iosApp -name "*.swift" -type f -exec sed -i '' 's/import ComposeApp/import shared/g' {} \;
+          
+          echo "=== Checking ContentView.swift ==="
+          cat iosApp/iosApp/ContentView.swift | head -10
+
       - name: Install CocoaPods (with retry)
         script: |
           cd iosApp
