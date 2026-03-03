@@ -50,6 +50,11 @@ workflows:
           cd iosApp
           pod install --repo-update
 
+      - name: Show embedded Gradle build script from pbxproj
+        script: |
+          echo "=== Gradle shellScript in Pods.xcodeproj ==="
+          grep -A 5 'shellScript' iosApp/Pods/Pods.xcodeproj/project.pbxproj | grep -A 5 'gradlew'
+
       - name: Show shared pod build script
         script: |
           echo "=== Contents of shared pod support files ==="
@@ -81,11 +86,15 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-            build 2>&1 | tee /tmp/build.log
-          BUILD_EXIT=${PIPESTATUS[0]}
-          echo "=== LAST 150 LINES OF BUILD LOG ==="
-          tail -150 /tmp/build.log
-          exit $BUILD_EXIT
+            build || true
+
+          echo "=== Actual executed script ==="
+          cat build/ios/Build/Intermediates.noindex/Pods.build/Release-iphoneos/shared.build/Script-*.sh 2>/dev/null || echo "Script file not found"
+
+          echo "=== Re-running script manually with bash -x ==="
+          for s in build/ios/Build/Intermediates.noindex/Pods.build/Release-iphoneos/shared.build/Script-*.sh; do
+            bash -x "$s" 2>&1 | tail -50
+          done
 
       - name: Package into .ipa
         script: |
