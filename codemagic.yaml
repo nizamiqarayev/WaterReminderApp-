@@ -33,7 +33,6 @@ workflows:
           if [ ! -d "$JAVA_HOME" ]; then
             echo "ERROR: JAVA_HOME not found. Available JDKs:"
             ls /Library/Java/JavaVirtualMachines/
-            echo "Update JAVA_HOME in codemagic.yaml vars to match one of the above"
             exit 1
           fi
 
@@ -48,20 +47,18 @@ workflows:
           echo "=== Generated podspec ==="
           cat shared/shared.podspec
 
-      - name: Patch podspec for Codemagic environment
+      - name: Patch podspec with ABSOLUTE paths
         script: |
           PODSPEC="shared/shared.podspec"
+          PROJECT_ROOT="$(pwd)"
           
-          echo "=== Before patching ==="
-          grep "REPO_ROOT" "$PODSPEC" || true
+          echo "=== Project root: $PROJECT_ROOT ==="
           
-          # Replace PODS_TARGET_SRCROOT with SRCROOT-based path
-          sed -i '' 's|REPO_ROOT="\$PODS_TARGET_SRCROOT"|REPO_ROOT="\$SRCROOT/../shared"|g' "$PODSPEC"
+          # Replace with absolute paths
+          sed -i '' "s|REPO_ROOT=\"\$SRCROOT/../shared\"|REPO_ROOT=\"$PROJECT_ROOT/shared\"|g" "$PODSPEC"
+          sed -i '' "s|REPO_ROOT=\"\$PODS_TARGET_SRCROOT\"|REPO_ROOT=\"$PROJECT_ROOT/shared\"|g" "$PODSPEC"
           
-          echo "=== After patching ==="
-          grep "REPO_ROOT" "$PODSPEC" || true
-          
-          echo "=== Full script_phases section ==="
+          echo "=== Patched podspec (showing script section) ==="
           sed -n '/script_phases/,/end/p' "$PODSPEC"
 
       - name: Install CocoaPods
@@ -69,42 +66,21 @@ workflows:
           cd iosApp
           pod install --repo-update
 
-      - name: Verify installation
+      - name: Verify generated script
         script: |
-          echo "=== Checking shared pod ==="
-          ls -la iosApp/Pods/shared/ || echo "shared pod directory not found"
-          
-          echo "=== Generated build script content ==="
+          echo "=== Checking generated pod script ==="
           SCRIPT_DIR="iosApp/Pods/Target Support Files/shared"
           if [ -d "$SCRIPT_DIR" ]; then
             for script in "$SCRIPT_DIR"/*.sh; do
               if [ -f "$script" ]; then
-                echo "--- Content of $script ---"
+                echo "--- $script ---"
                 cat "$script"
-                echo ""
               fi
             done
           fi
 
-      - name: Test Gradle syncFramework manually
-        script: |
-          echo "=== Testing Gradle command manually before xcodebuild ==="
-          cd shared
-          ../gradlew :shared:syncFramework \
-            -Pkotlin.native.cocoapods.platform=iphoneos \
-            -Pkotlin.native.cocoapods.archs="arm64" \
-            -Pkotlin.native.cocoapods.configuration="Release" || {
-              echo "Gradle syncFramework FAILED"
-              exit 1
-            }
-          cd ..
-          echo "=== Gradle syncFramework succeeded ==="
-
       - name: Build iOS app (unsigned IPA)
         script: |
-          set -e
-          set -o pipefail
-          
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
             -scheme "$XCODE_SCHEME" \
@@ -115,27 +91,7 @@ workflows:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
-            build 2>&1 | tee build.log || {
-              echo ""
-              echo "=== BUILD FAILED - Showing last 100 lines ==="
-              tail -100 build.log
-              
-              echo ""
-              echo "=== Checking generated script that failed ==="
-              SCRIPT_FILE=$(find build/ios/Build/Intermediates.noindex/Pods.build/Release-iphoneos/shared.build -name "Script-*.sh" | head -1)
-              if [ -f "$SCRIPT_FILE" ]; then
-                echo "--- Content of failed script: $SCRIPT_FILE ---"
-                cat "$SCRIPT_FILE"
-                
-                echo ""
-                echo "=== Running script manually with bash -x ==="
-                cd iosApp
-                bash -x "$SCRIPT_FILE" 2>&1 | tail -50 || true
-                cd ..
-              fi
-              
-              exit 1
-            }
+            build
 
       - name: Package into .ipa
         script: |
@@ -149,7 +105,6 @@ workflows:
     artifacts:
       - "*.ipa"
       - build/ios/Build/Products/**/*.app
-      - build.log
 
     publishing:
       email:
