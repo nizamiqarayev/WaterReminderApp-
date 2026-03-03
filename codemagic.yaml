@@ -74,8 +74,8 @@ workflows:
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
             build 2>&1 | tee /tmp/build.log
           BUILD_EXIT=${PIPESTATUS[0]}
-          echo "=== KEY ERRORS ==="
-          grep -E 'error:|Exception|FAILED|linkPod|gradlew|Build shared' /tmp/build.log | head -60
+          echo "=== LAST 150 LINES OF BUILD LOG ==="
+          tail -150 /tmp/build.log
           exit $BUILD_EXIT
 
       - name: Package into .ipa
