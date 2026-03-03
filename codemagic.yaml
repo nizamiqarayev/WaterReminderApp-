@@ -5,6 +5,11 @@ workflows:
     max_build_duration: 60
     instance_type: mac_mini_m2
 
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - iosApp/Pods
+
     environment:
       java: 17
       xcode: latest
@@ -61,23 +66,52 @@ workflows:
           echo "=== Patched podspec (showing script section) ==="
           sed -n '/script_phases/,/end/p' "$PODSPEC"
 
-      - name: Install CocoaPods
+      - name: Fix composeApp references in iosApp project
+        script: |
+          PBXPROJ="iosApp/iosApp.xcodeproj/project.pbxproj"
+          
+          echo "=== Checking for composeApp references ==="
+          grep -n "composeApp" "$PBXPROJ" || echo "No composeApp references found"
+          
+          # Replace composeApp with shared
+          if grep -q "composeApp" "$PBXPROJ"; then
+            sed -i '' 's/:composeApp:/:shared:/g' "$PBXPROJ"
+            sed -i '' 's/composeApp/shared/g' "$PBXPROJ"
+            
+            echo "=== Patched composeApp -> shared ==="
+            grep -n "shared" "$PBXPROJ" | head -20
+          else
+            echo "No patching needed"
+          fi
+
+      - name: Install CocoaPods (with retry)
         script: |
           cd iosApp
-          pod install --repo-update
-
-      - name: Verify generated script
-        script: |
-          echo "=== Checking generated pod script ==="
-          SCRIPT_DIR="iosApp/Pods/Target Support Files/shared"
-          if [ -d "$SCRIPT_DIR" ]; then
-            for script in "$SCRIPT_DIR"/*.sh; do
-              if [ -f "$script" ]; then
-                echo "--- $script ---"
-                cat "$script"
+          
+          MAX_ATTEMPTS=5
+          ATTEMPT=1
+          
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "=== CocoaPods install attempt $ATTEMPT/$MAX_ATTEMPTS ==="
+            
+            if pod install --repo-update; then
+              echo "✅ CocoaPods installation succeeded"
+              exit 0
+            else
+              echo "❌ Attempt $ATTEMPT failed"
+              
+              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+                WAIT_TIME=$((ATTEMPT * 30))
+                echo "Waiting ${WAIT_TIME}s before retry..."
+                sleep $WAIT_TIME
               fi
-            done
-          fi
+              
+              ATTEMPT=$((ATTEMPT + 1))
+            fi
+          done
+          
+          echo "❌ CocoaPods installation failed after $MAX_ATTEMPTS attempts"
+          exit 1
 
       - name: Build iOS app (unsigned IPA)
         script: |
