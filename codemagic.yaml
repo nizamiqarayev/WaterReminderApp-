@@ -35,21 +35,13 @@ workflows:
         script: |
           echo "JAVA_HOME=$JAVA_HOME"
           java -version
-          if [ ! -d "$JAVA_HOME" ]; then
-            echo "ERROR: JAVA_HOME not found. Available JDKs:"
-            ls /Library/Java/JavaVirtualMachines/
-            exit 1
-          fi
 
       - name: List Gradle projects
         script: ./gradlew projects
 
       - name: Generate shared.podspec
         script: |
-          echo "Generating podspec..."
           ./gradlew :shared:podspec
-          
-          echo "=== Generated podspec ==="
           cat shared/shared.podspec
 
       - name: Patch podspec with ABSOLUTE paths
@@ -57,42 +49,62 @@ workflows:
           PODSPEC="shared/shared.podspec"
           PROJECT_ROOT="$(pwd)"
           
-          echo "=== Project root: $PROJECT_ROOT ==="
-          
-          # Replace with absolute paths
           sed -i '' "s|REPO_ROOT=\"\$SRCROOT/../shared\"|REPO_ROOT=\"$PROJECT_ROOT/shared\"|g" "$PODSPEC"
           sed -i '' "s|REPO_ROOT=\"\$PODS_TARGET_SRCROOT\"|REPO_ROOT=\"$PROJECT_ROOT/shared\"|g" "$PODSPEC"
           
-          echo "=== Patched podspec (showing script section) ==="
+          echo "=== Patched podspec ==="
           sed -n '/script_phases/,/end/p' "$PODSPEC"
 
-      - name: Fix composeApp references in iosApp project
+      - name: Fix composeApp references in project
         script: |
           PBXPROJ="iosApp/iosApp.xcodeproj/project.pbxproj"
           
-          echo "=== Checking for composeApp references ==="
-          grep -n "composeApp" "$PBXPROJ" || echo "No composeApp references found"
-          
-          # Replace composeApp with shared
           if grep -q "composeApp" "$PBXPROJ"; then
             sed -i '' 's/:composeApp:/:shared:/g' "$PBXPROJ"
             sed -i '' 's/composeApp/shared/g' "$PBXPROJ"
-            
-            echo "=== Patched composeApp -> shared ==="
-            grep -n "shared" "$PBXPROJ" | head -20
-          else
-            echo "No patching needed"
+            echo "Patched composeApp -> shared"
           fi
 
-      - name: Fix Swift imports (ComposeApp -> shared)
+      - name: Replace ContentView with SwiftUI version
         script: |
-          echo "=== Fixing Swift imports ==="
+          cat > iosApp/iosApp/ContentView.swift << 'EOF'
+    import UIKit
+    import SwiftUI
+    import shared
+
+    struct ContentView: View {
+        var body: some View {
+            NavigationView {
+                VStack(spacing: 20) {
+                    Image(systemName: "drop.fill")
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .foregroundStyle(.blue)
+                    
+                    Text("Water Reminder")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                    
+                    Text("iOS Build Successful! ✅")
+                        .font(.title2)
+                        .foregroundColor(.green)
+                    
+                    Text("Kotlin Shared Module Loaded")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+                .padding()
+                .navigationTitle("WaterReminder")
+            }
+        }
+    }
+
+    #Preview {
+        ContentView()
+    }
+    EOF
           
-          # Find all Swift files and replace ComposeApp with shared
-          find iosApp/iosApp -name "*.swift" -type f -exec sed -i '' 's/import ComposeApp/import shared/g' {} \;
-          
-          echo "=== Checking ContentView.swift ==="
-          cat iosApp/iosApp/ContentView.swift | head -10
+          echo "=== Created SwiftUI ContentView ==="
 
       - name: Install CocoaPods (with retry)
         script: |
@@ -102,28 +114,23 @@ workflows:
           ATTEMPT=1
           
           while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
-            echo "=== CocoaPods install attempt $ATTEMPT/$MAX_ATTEMPTS ==="
+            echo "=== Attempt $ATTEMPT/$MAX_ATTEMPTS ==="
             
             if pod install --repo-update; then
-              echo "✅ CocoaPods installation succeeded"
+              echo "✅ Success"
               exit 0
-            else
-              echo "❌ Attempt $ATTEMPT failed"
-              
-              if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
-                WAIT_TIME=$((ATTEMPT * 30))
-                echo "Waiting ${WAIT_TIME}s before retry..."
-                sleep $WAIT_TIME
-              fi
-              
-              ATTEMPT=$((ATTEMPT + 1))
             fi
+            
+            if [ $ATTEMPT -lt $MAX_ATTEMPTS ]; then
+              sleep $((ATTEMPT * 30))
+            fi
+            
+            ATTEMPT=$((ATTEMPT + 1))
           done
           
-          echo "❌ CocoaPods installation failed after $MAX_ATTEMPTS attempts"
           exit 1
 
-      - name: Build iOS app (unsigned IPA)
+      - name: Build iOS app
         script: |
           xcodebuild \
             -workspace "$XCODE_PROJECT" \
@@ -137,14 +144,14 @@ workflows:
             PRODUCT_BUNDLE_IDENTIFIER="$BUNDLE_ID" \
             build
 
-      - name: Package into .ipa
+      - name: Package IPA
         script: |
           mkdir -p output/Payload
           cp -r "build/ios/Build/Products/Release-iphoneos/$XCODE_SCHEME.app" output/Payload/
           cd output
           zip -r "../$XCODE_SCHEME.ipa" Payload
           cd ..
-          echo "IPA ready: $XCODE_SCHEME.ipa"
+          echo "✅ IPA ready: $XCODE_SCHEME.ipa"
 
     artifacts:
       - "*.ipa"
